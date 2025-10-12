@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import {
   Card,
@@ -121,7 +122,7 @@ export default function DashboardPage() {
                     <CardTitle>Performance Distribution</CardTitle>
                     <CardDescription>Student scores based on selected filters.</CardDescription>
                 </div>
-                <div className="flex w-full md:w-auto gap-2">
+                <div className="flex w-full flex-col md:flex-row md:w-auto gap-2">
                     <Select value={selectedSubject} onValueChange={setSelectedSubject}>
                         <SelectTrigger className="w-full md:w-[180px]">
                             <SelectValue placeholder="Select Subject" />
@@ -144,6 +145,9 @@ export default function DashboardPage() {
                             <SelectItem value="final-term">Final Term</SelectItem>
                         </SelectContent>
                     </Select>
+                    <Button asChild>
+                      <Link href="/dashboard/analysis">View Detailed Report</Link>
+                    </Button>
                 </div>
             </div>
           </CardHeader>
@@ -182,50 +186,12 @@ export default function DashboardPage() {
           <CardHeader>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <CardTitle>Student Information</CardTitle>
-                <CardDescription>Detailed information for each student based on filters.</CardDescription>
+                <CardTitle>Recent Student Activity</CardTitle>
+                <CardDescription>A glimpse of recent student performance.</CardDescription>
               </div>
-               <Dialog>
-                  <DialogTrigger asChild>
-                    <Button>View All</Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-4xl">
-                    <DialogHeader>
-                      <DialogTitle>All Students</DialogTitle>
-                    </DialogHeader>
-                    <ScrollArea className="h-96">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Subject</TableHead>
-                            <TableHead>Exam</TableHead>
-                            <TableHead>Score</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Contact</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {filteredStudents.map((student) => (
-                            <TableRow key={student.name}>
-                              <TableCell>{student.name}</TableCell>
-                              <TableCell>{student.subject}</TableCell>
-                               <TableCell>{student.examType.replace('-', ' ')}</TableCell>
-                              <TableCell>{student.score}%</TableCell>
-                              <TableCell>
-                                <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
-                              </TableCell>
-                               <TableCell>
-                                <p><strong>Phone:</strong> {student.details.phone}</p>
-                                <p><strong>Email:</strong> {student.details.email}</p>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </ScrollArea>
-                  </DialogContent>
-                </Dialog>
+              <Button asChild>
+                <Link href="/dashboard/analysis">View All Students</Link>
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -234,30 +200,34 @@ export default function DashboardPage() {
                 filteredStudents.slice(0, 5).map((student, index) => (
                   <AccordionItem value={`item-${index}`} key={student.name}>
                     <AccordionTrigger>
-                      <Table className="w-full">
-                        <TableBody>
-                          <TableRow className="border-none">
-                            <TableCell className="font-medium p-0 w-1/4">{student.name}</TableCell>
-                            <TableCell className="hidden md:table-cell p-0 w-1/4">{student.subject}</TableCell>
-                            <TableCell className="hidden md:table-cell text-center p-0 w-1/4">{student.score}%</TableCell>
-                            <TableCell className="p-0 w-1/4 text-right">
-                              <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
+                      <Link href="/dashboard/analysis" className="w-full">
+                        <Table className="w-full">
+                          <TableBody>
+                            <TableRow className="border-none">
+                              <TableCell className="font-medium p-0 w-1/4">{student.name}</TableCell>
+                              <TableCell className="hidden md:table-cell p-0 w-1/4">{student.subject}</TableCell>
+                              <TableCell className="hidden md:table-cell text-center p-0 w-1/4">{student.score}%</TableCell>
+                              <TableCell className="p-0 w-1/4 text-right">
+                                <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Link>
                     </AccordionTrigger>
                     <AccordionContent>
-                      <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md">
-                        <Avatar>
-                          <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />
-                          <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p><strong>Phone:</strong> {student.details.phone}</p>
-                          <p><strong>Email:</strong> {student.details.email}</p>
+                       <Link href="/dashboard/analysis">
+                        <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md hover:bg-muted">
+                          <Avatar>
+                            <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />
+                            <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p><strong>Phone:</strong> {student.details.phone}</p>
+                            <p><strong>Email:</strong> {student.details.email}</p>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     </AccordionContent>
                   </AccordionItem>
                 ))
@@ -271,5 +241,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart2, HelpCircle, FileText, User, LogOut, Menu, ChevronDown } from "lucide-react";
+import { BarChart2, HelpCircle, FileText, User, LogOut, Menu, ChevronDown, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +18,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const navLinks = [
   { href: "/dashboard", label: "Analytics", icon: BarChart2 },
+  { href: "/dashboard/analysis", label: "Detailed Analysis", icon: PieChart },
   { href: "/dashboard/documents", label: "Documents", icon: FileText },
 ];
 

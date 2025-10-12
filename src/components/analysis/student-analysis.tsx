@@ -1,12 +1,16 @@
+
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const allStudents = [
@@ -177,6 +181,8 @@ const allStudents = [
 
 export function StudentAnalysis({ selectedStudent }: { selectedStudent: string | null }) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isSearchOpen, setSearchOpen] = useState(false);
 
     useEffect(() => {
         if (selectedStudent) {
@@ -197,7 +203,18 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
         setCurrentIndex(prev => (prev === allStudents.length - 1 ? 0 : prev + 1));
     };
 
-    const trendData = student.performance[Object.keys(student.performance)[0]].map((_, termIndex) => {
+    const handleStudentSelect = (index: number) => {
+        setCurrentIndex(index);
+        setSearchOpen(false);
+        setSearchQuery("");
+    }
+
+    const filteredStudents = useMemo(() => {
+        if (!searchQuery) return [];
+        return allStudents.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    }, [searchQuery]);
+
+    const trendData = useMemo(() => student.performance[Object.keys(student.performance)[0]].map((_, termIndex) => {
         const dataPoint: {term: string, [key: string]: number | string} = { term: ['First Term', 'Mid Term', 'Final Term'][termIndex]};
         Object.keys(student.performance).forEach(subject => {
             const performanceRecord = student.performance[subject as keyof typeof student.performance][termIndex];
@@ -206,7 +223,7 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
             }
         });
         return dataPoint;
-    });
+    }), [student]);
 
 
     return (
@@ -225,6 +242,34 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
                             </div>
                         </div>
                          <div className="flex items-center gap-2">
+                             <Popover open={isSearchOpen} onOpenChange={setSearchOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button variant="outline">
+                                        <Search className="mr-2 h-4 w-4" />
+                                        Search Student
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-[200px] p-0">
+                                    <div className="p-2">
+                                        <Input
+                                            placeholder="Type a name..."
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                        />
+                                    </div>
+                                    <ScrollArea className="h-48">
+                                        {filteredStudents.length > 0 ? filteredStudents.map((s, i) => (
+                                            <div
+                                                key={s.name}
+                                                onClick={() => handleStudentSelect(allStudents.indexOf(s))}
+                                                className="p-2 hover:bg-accent cursor-pointer"
+                                            >
+                                                {s.name}
+                                            </div>
+                                        )) : <p className="p-2 text-sm text-muted-foreground">No students found.</p>}
+                                    </ScrollArea>
+                                </PopoverContent>
+                            </Popover>
                             <Button variant="outline" size="icon" onClick={goToPrevious}><ChevronLeft /></Button>
                             <span className="text-sm text-muted-foreground">{currentIndex + 1} of {allStudents.length}</span>
                             <Button variant="outline" size="icon" onClick={goToNext}><ChevronRight /></Button>
@@ -291,5 +336,3 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
         </div>
     )
 }
-
-    

@@ -29,6 +29,9 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+
 
 const studentData = [
   { name: 'Aarav', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
@@ -74,23 +77,31 @@ const calculateChartData = (students: typeof studentData) => {
 export default function DashboardPage() {
   const [selectedSubject, setSelectedSubject] = useState("all-subjects");
   const [selectedExamType, setSelectedExamType] = useState("all-exams");
+  const [searchQuery, setSearchQuery] = useState("");
   const [filteredStudents, setFilteredStudents] = useState(studentData);
   const [chartData, setChartData] = useState(calculateChartData(studentData));
 
   useEffect(() => {
     let students = studentData;
+    let chartStudents = studentData;
 
     if (selectedSubject !== 'all-subjects') {
       students = students.filter(s => s.subjectValue === selectedSubject);
+      chartStudents = chartStudents.filter(s => s.subjectValue === selectedSubject);
     }
     
     if (selectedExamType !== 'all-exams') {
       students = students.filter(s => s.examType === selectedExamType);
+      chartStudents = chartStudents.filter(s => s.examType === selectedExamType);
+    }
+    
+    if (searchQuery) {
+        students = students.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
     setFilteredStudents(students);
-    setChartData(calculateChartData(students));
-  }, [selectedSubject, selectedExamType]);
+    setChartData(calculateChartData(chartStudents));
+  }, [selectedSubject, selectedExamType, searchQuery]);
 
 
   return (
@@ -180,9 +191,21 @@ export default function DashboardPage() {
                 <CardTitle>Recent Student Activity</CardTitle>
                 <CardDescription>A glimpse of recent student performance.</CardDescription>
               </div>
-              <Button asChild>
-                <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students' } }}>View All Students</Link>
-              </Button>
+              <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+                <div className="relative w-full md:w-auto">
+                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                   <Input 
+                      type="search"
+                      placeholder="Search students..."
+                      className="pl-8 w-full md:w-[250px]"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                   />
+                </div>
+                <Button asChild>
+                  <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students' } }}>View All Students</Link>
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
@@ -232,5 +255,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    

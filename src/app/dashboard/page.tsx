@@ -90,36 +90,37 @@ export default function DashboardPage() {
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-6xl">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold font-headline">Student Analytics</h1>
-        <p className="text-muted-foreground">
-          Overview of student performance and engagement.
-        </p>
-      </header>
-
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-          <SelectTrigger className="w-full md:w-[180px]">
-            <SelectValue placeholder="Select Subject" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all-subjects">All Subjects</SelectItem>
-            <SelectItem value="data-mining">Data Mining</SelectItem>
-            <SelectItem value="network-systems">Network Systems</SelectItem>
-            <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select value={selectedExamType} onValueChange={setSelectedExamType}>
-          <SelectTrigger className="w-full md:w-[180px]">
-            <SelectValue placeholder="Select Exam Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all-exams">All Exams</SelectItem>
-            <SelectItem value="first-term">First Term</SelectItem>
-            <SelectItem value="mid-term">Mid Term</SelectItem>
-            <SelectItem value="final-term">Final Term</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold font-headline">Student Analytics</h1>
+          <p className="text-muted-foreground">
+            Overview of student performance and engagement.
+          </p>
+        </div>
+        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Select Subject" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all-subjects">All Subjects</SelectItem>
+              <SelectItem value="data-mining">Data Mining</SelectItem>
+              <SelectItem value="network-systems">Network Systems</SelectItem>
+              <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={selectedExamType} onValueChange={setSelectedExamType}>
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Select Exam Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all-exams">All Exams</SelectItem>
+              <SelectItem value="first-term">First Term</SelectItem>
+              <SelectItem value="mid-term">Mid Term</SelectItem>
+              <SelectItem value="final-term">Final Term</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
 

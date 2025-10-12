@@ -25,7 +25,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useToast } from "@/hooks/use-toast"
-import { Trash2 } from "lucide-react"
+import { Trash2, PlusCircle } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
+
 
 const documentFormSchema = z.object({
   subject: z.string({ required_error: "Please select a subject." }),
@@ -39,16 +41,19 @@ const initialDocuments = [
     { title: "Intro to Distributed Systems", subject: "Distributed Computing", date: "2024-05-05" },
 ];
 
-const subjectMap: { [key: string]: string } = {
-  "data-mining": "Data Mining",
-  "network-systems": "Network Systems",
-  "distributed-computing": "Distributed Computing"
-};
+const initialSubjects = [
+  { value: "data-mining", label: "Data Mining" },
+  { value: "network-systems", label: "Network Systems" },
+  { value: "distributed-computing", label: "Distributed Computing" },
+];
 
 export default function DocumentsPage() {
   const { toast } = useToast()
   const [fileName, setFileName] = useState("");
   const [uploadedDocuments, setUploadedDocuments] = useState(initialDocuments);
+  const [subjects, setSubjects] = useState(initialSubjects);
+  const [newSubject, setNewSubject] = useState("");
+  const [isAddSubjectOpen, setAddSubjectOpen] = useState(false);
 
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
@@ -59,9 +64,10 @@ export default function DocumentsPage() {
   const fileRef = form.register("file");
 
   function onSubmit(data: z.infer<typeof documentFormSchema>) {
+    const subjectLabel = subjects.find(s => s.value === data.subject)?.label || data.subject;
     const newDocument = {
       title: data.title,
-      subject: subjectMap[data.subject],
+      subject: subjectLabel,
       date: new Date().toISOString().split('T')[0],
     };
 
@@ -73,6 +79,27 @@ export default function DocumentsPage() {
     })
     form.reset()
     setFileName("");
+  }
+  
+  const handleAddSubject = () => {
+    if (newSubject.trim()) {
+      const newSubjectValue = newSubject.toLowerCase().replace(/\s+/g, '-');
+      if (!subjects.some(s => s.value === newSubjectValue)) {
+        setSubjects(prev => [...prev, { value: newSubjectValue, label: newSubject.trim() }]);
+        setNewSubject("");
+        setAddSubjectOpen(false);
+        toast({
+          title: "Subject Added",
+          description: `"${newSubject.trim()}" has been added to the list.`,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Subject Exists",
+          description: "This subject is already in the list.",
+        });
+      }
+    }
   }
 
   return (
@@ -96,7 +123,32 @@ export default function DocumentsPage() {
                     name="subject"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Subject</FormLabel>
+                         <div className="flex justify-between items-center">
+                          <FormLabel>Subject</FormLabel>
+                          <Dialog open={isAddSubjectOpen} onOpenChange={setAddSubjectOpen}>
+                            <DialogTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <PlusCircle className="mr-2 h-4 w-4" />
+                                Add Subject
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Add New Subject</DialogTitle>
+                              </DialogHeader>
+                              <div className="grid gap-4 py-4">
+                                <Input
+                                  placeholder="New subject title"
+                                  value={newSubject}
+                                  onChange={(e) => setNewSubject(e.target.value)}
+                                />
+                              </div>
+                              <DialogFooter>
+                                <Button onClick={handleAddSubject}>Add Subject</Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
@@ -104,9 +156,9 @@ export default function DocumentsPage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="data-mining">Data Mining</SelectItem>
-                            <SelectItem value="network-systems">Network Systems</SelectItem>
-                            <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
+                            {subjects.map(subject => (
+                              <SelectItem key={subject.value} value={subject.value}>{subject.label}</SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />

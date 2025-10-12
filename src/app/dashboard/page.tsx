@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -36,16 +35,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const studentData = [
-  { name: 'Aarav', subject: 'Data Mining', score: 85, progress: 85, status: 'On Track', details: { phone: '98********', email: 'aarav@test.com' }, gender: 'male' },
-  { name: 'Priya', subject: 'Data Mining', score: 92, progress: 92, status: 'Excelling', details: { phone: '98********', email: 'priya@test.com' }, gender: 'female' },
-  { name: 'Rohan', subject: 'Network Systems', score: 78, progress: 78, status: 'On Track', details: { phone: '98********', email: 'rohan@test.com' }, gender: 'male' },
-  { name: 'Sameer', subject: 'Data Mining', score: 64, progress: 64, status: 'Needs Help', details: { phone: '98********', email: 'sameer@test.com' }, gender: 'male' },
-  { name: 'Anjali', subject: 'Network Systems', score: 88, progress: 88, status: 'Excelling', details: { phone: '98********', email: 'anjali@test.com' }, gender: 'female' },
-  { name: 'Bikash', subject: 'Distributed Computing', score: 95, progress: 95, status: 'Excelling', details: { phone: '98********', email: 'bikash@test.com' }, gender: 'male' },
-  { name: 'Sita', subject: 'Distributed Computing', score: 72, progress: 72, status: 'On Track', details: { phone: '98********', email: 'sita@test.com' }, gender: 'female' },
+  { name: 'Aarav', subject: 'Data Mining', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
+  { name: 'Priya', subject: 'Data Mining', score: 92, status: 'Excelling', details: { phone: '9809876543', email: 'priya.kaur@test.com' }, gender: 'female' },
+  { name: 'Rohan', subject: 'Network Systems', score: 78, status: 'On Track', details: { phone: '9845678901', email: 'rohan.thapa@test.com' }, gender: 'male' },
+  { name: 'Sameer', subject: 'Data Mining', score: 64, status: 'Needs Help', details: { phone: '9865432109', email: 'sameer.acharya@test.com' }, gender: 'male' },
+  { name: 'Anjali', subject: 'Network Systems', score: 88, status: 'Excelling', details: { phone: '9811223344', email: 'anjali.gurung@test.com' }, gender: 'female' },
+  { name: 'Bikash', subject: 'Distributed Computing', score: 95, status: 'Excelling', details: { phone: '9855667788', email: 'bikash.rai@test.com' }, gender: 'male' },
+  { name: 'Sita', subject: 'Distributed Computing', score: 72, status: 'On Track', details: { phone: '9844332211', email: 'sita.lama@test.com' }, gender: 'female' },
+  { name: 'Nitesh', subject: 'Data Mining', score: 79, status: 'On Track', details: { phone: '9819283746', email: 'nitesh.yadav@test.com' }, gender: 'male' },
+  { name: 'Sunita', subject: 'Network Systems', score: 81, status: 'On Track', details: { phone: '9801928374', email: 'sunita.shrestha@test.com' }, gender: 'female' },
+  { name: 'Rajesh', subject: 'Distributed Computing', score: 68, status: 'Needs Help', details: { phone: '9860192837', email: 'rajesh.magar@test.com' }, gender: 'male' },
 ];
 
 const chartData = [
@@ -60,7 +63,7 @@ export default function DashboardPage() {
   const [showAllStudents, setShowAllStudents] = useState(false);
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-8 max-w-7xl">
       <header className="mb-8">
         <h1 className="text-3xl font-bold font-headline">Student Analytics</h1>
         <p className="text-muted-foreground">
@@ -131,33 +134,35 @@ export default function DashboardPage() {
                     <DialogHeader>
                       <DialogTitle>All Students</DialogTitle>
                     </DialogHeader>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Name</TableHead>
-                          <TableHead>Subject</TableHead>
-                          <TableHead>Score</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Contact</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {studentData.map((student) => (
-                          <TableRow key={student.name}>
-                            <TableCell>{student.name}</TableCell>
-                            <TableCell>{student.subject}</TableCell>
-                            <TableCell>{student.score}%</TableCell>
-                            <TableCell>
-                              <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
-                            </TableCell>
-                             <TableCell>
-                              <p><strong>Phone:</strong> {student.details.phone}</p>
-                              <p><strong>Email:</strong> {student.details.email}</p>
-                            </TableCell>
+                    <ScrollArea className="h-96">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Subject</TableHead>
+                            <TableHead>Score</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Contact</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {studentData.map((student) => (
+                            <TableRow key={student.name}>
+                              <TableCell>{student.name}</TableCell>
+                              <TableCell>{student.subject}</TableCell>
+                              <TableCell>{student.score}%</TableCell>
+                              <TableCell>
+                                <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
+                              </TableCell>
+                               <TableCell>
+                                <p><strong>Phone:</strong> {student.details.phone}</p>
+                                <p><strong>Email:</strong> {student.details.email}</p>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </ScrollArea>
                   </DialogContent>
                 </Dialog>
               </div>

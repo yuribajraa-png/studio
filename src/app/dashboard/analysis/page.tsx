@@ -13,7 +13,7 @@ function DetailedAnalysisContent() {
   const studentName = searchParams.get('student');
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-8 max-w-6xl">
       {view === 'performance' && (
         <>
           <header className="mb-8">
@@ -48,7 +48,7 @@ function DetailedAnalysisContent() {
 
 export default function DetailedAnalysisPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto p-4 md:p-8"><Skeleton className="w-full h-96" /></div>}>
+    <Suspense fallback={<div className="container mx-auto p-4 md:p-8 max-w-6xl"><Skeleton className="w-full h-96" /></div>}>
       <DetailedAnalysisContent />
     </Suspense>
   );

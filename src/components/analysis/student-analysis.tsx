@@ -102,7 +102,7 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
                 <CardHeader>
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="flex items-center gap-4">
-                            <Avatar className="w-16 h-16">
+                            <Avatar className="w-20 h-20">
                                 <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />
                                 <AvatarFallback>{student.name.substring(0, 2)}</AvatarFallback>
                             </Avatar>
@@ -125,7 +125,7 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
                     <CardTitle>Subject Performance Trend</CardTitle>
                     <CardDescription>Score progression across different terms.</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pl-2">
                     <ResponsiveContainer width="100%" height={400}>
                         <LineChart data={trendData}>
                             <CartesianGrid strokeDasharray="3 3" />

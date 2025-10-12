@@ -29,15 +29,6 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
 
 const studentData = [
   { name: 'Aarav', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
@@ -55,14 +46,6 @@ const studentData = [
   { name: 'Student 13', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 55, status: 'On Track', details: { phone: '3333333333', email: 'student13@test.com' }, gender: 'male' },
   { name: 'Student 14', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 75, status: 'On Track', details: { phone: '4444444444', email: 'student14@test.com' }, gender: 'female' },
   { name: 'Student 15', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 89, status: 'Excelling', details: { phone: '5555555555', email: 'student15@test.com' }, gender: 'male' },
-];
-
-const initialChartData = [
-  { name: "0-20", total: 0 },
-  { name: "21-40", total: 0 },
-  { name: "41-60", total: 0 },
-  { name: "61-80", total: 0 },
-  { name: "81-100", total: 0 },
 ];
 
 const calculateChartData = (students: typeof studentData) => {
@@ -146,7 +129,7 @@ export default function DashboardPage() {
                         </SelectContent>
                     </Select>
                     <Button asChild>
-                      <Link href="/dashboard/analysis">View Detailed Report</Link>
+                      <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance' } }}>View Detailed Report</Link>
                     </Button>
                 </div>
             </div>
@@ -190,7 +173,7 @@ export default function DashboardPage() {
                 <CardDescription>A glimpse of recent student performance.</CardDescription>
               </div>
               <Button asChild>
-                <Link href="/dashboard/analysis">View All Students</Link>
+                <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students' } }}>View All Students</Link>
               </Button>
             </div>
           </CardHeader>
@@ -200,7 +183,7 @@ export default function DashboardPage() {
                 filteredStudents.slice(0, 5).map((student, index) => (
                   <AccordionItem value={`item-${index}`} key={student.name}>
                     <AccordionTrigger>
-                      <Link href="/dashboard/analysis" className="w-full">
+                      <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students', student: student.name } }} className="w-full">
                         <Table className="w-full">
                           <TableBody>
                             <TableRow className="border-none">
@@ -216,7 +199,7 @@ export default function DashboardPage() {
                       </Link>
                     </AccordionTrigger>
                     <AccordionContent>
-                       <Link href="/dashboard/analysis">
+                       <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students', student: student.name } }}>
                         <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md hover:bg-muted">
                           <Avatar>
                             <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />

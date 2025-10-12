@@ -29,6 +29,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useToast } from "@/hooks/use-toast"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
+
 
 const questionSchema = z.object({
   question: z.string().min(10, { message: "Question must be at least 10 characters." }),
@@ -41,6 +43,7 @@ const questionSchema = z.object({
 const examFormSchema = z.object({
   topic: z.string().min(3, "Topic must be at least 3 characters."),
   subject: z.string({ required_error: "Please select a subject." }),
+  description: z.string().optional(),
   type: z.enum(["quiz", "exam"], { required_error: "Please select a type." }),
   uniformMarks: z.boolean().default(false),
   marksPerQuestion: z.coerce.number().optional(),
@@ -65,16 +68,27 @@ const examFormSchema = z.object({
 
 export type Exam = z.infer<typeof examFormSchema>;
 
+const initialSubjects = [
+  { value: "data-mining", label: "Data Mining" },
+  { value: "network-systems", label: "Network Systems" },
+  { value: "distributed-computing", label: "Distributed Computing" },
+];
+
 export default function NewQuestionPage() {
   const { toast } = useToast()
   // In a real app, you'd persist this in a DB and retrieve it.
   const [allExams, setAllExams] = useState<Exam[]>([]);
+  const [subjects, setSubjects] = useState(initialSubjects);
+  const [newSubject, setNewSubject] = useState("");
+  const [isAddSubjectOpen, setAddSubjectOpen] = useState(false);
+
 
   const form = useForm<Exam>({
     resolver: zodResolver(examFormSchema),
     defaultValues: {
       topic: "",
       subject: "",
+      description: "",
       type: "quiz",
       uniformMarks: false,
       questions: [],
@@ -143,6 +157,27 @@ export default function NewQuestionPage() {
     addNewQuestion(); // Add a fresh one for the next exam
   }
 
+  const handleAddSubject = () => {
+    if (newSubject.trim()) {
+      const newSubjectValue = newSubject.toLowerCase().replace(/\s+/g, '-');
+      if (!subjects.some(s => s.value === newSubjectValue)) {
+        setSubjects(prev => [...prev, { value: newSubjectValue, label: newSubject.trim() }]);
+        setNewSubject("");
+        setAddSubjectOpen(false);
+        toast({
+          title: "Subject Added",
+          description: `"${newSubject.trim()}" has been added to the list.`,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Subject Exists",
+          description: "This subject is already in the list.",
+        });
+      }
+    }
+  }
+
   return (
     <div className="container mx-auto p-4 md:p-8">
       <header className="mb-8">
@@ -161,8 +196,70 @@ export default function NewQuestionPage() {
               <CardContent className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <FormField control={form.control} name="topic" render={({ field }) => (<FormItem><FormLabel>Topic</FormLabel><FormControl><Input placeholder="e.g. Final Exam, Chapter 5 Quiz" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="subject" render={({ field }) => ( <FormItem><FormLabel>Subject</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a subject" /></SelectTrigger></FormControl><SelectContent><SelectItem value="data-mining">Data Mining</SelectItem><SelectItem value="network-systems">Network Systems</SelectItem><SelectItem value="distributed-computing">Distributed Computing</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name="subject"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex justify-between items-center">
+                            <FormLabel>Subject</FormLabel>
+                            <Dialog open={isAddSubjectOpen} onOpenChange={setAddSubjectOpen}>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <PlusCircle className="mr-2 h-4 w-4" />
+                                  Add Subject
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Add New Subject</DialogTitle>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                  <Input
+                                    placeholder="New subject title"
+                                    value={newSubject}
+                                    onChange={(e) => setNewSubject(e.target.value)}
+                                  />
+                                </div>
+                                <DialogFooter>
+                                  <Button onClick={handleAddSubject}>Add Subject</Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a subject" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {subjects.map(subject => (
+                                <SelectItem key={subject.value} value={subject.value}>{subject.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                  />
                 </div>
+                 <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description (Optional)</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="e.g., Attempt all questions. Each question carries equal marks."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                 <FormField control={form.control} name="type" render={({ field }) => (<FormItem className="space-y-3"><FormLabel>Type</FormLabel><FormControl><RadioGroup onValueChange={e => { field.onChange(e); remove(); addNewQuestion(); }} defaultValue={field.value} className="flex gap-4"><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="quiz" /></FormControl><FormLabel className="font-normal">Quiz</FormLabel></FormItem><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="exam" /></FormControl><FormLabel className="font-normal">Exam</FormLabel></FormItem></RadioGroup></FormControl><FormMessage /></FormItem>)} />
 

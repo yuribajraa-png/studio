@@ -61,6 +61,12 @@ export default function ViewExamsPage() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
+                    {exam.description && (
+                        <div className="p-4 bg-muted/20 rounded-md mb-4 border-l-4 border-primary">
+                            <p className="font-medium">Exam Description:</p>
+                            <p className="text-sm text-muted-foreground">{exam.description}</p>
+                        </div>
+                    )}
                     {exam.questions.map((q, qIndex) => (
                       <div
                         className="p-4 bg-muted/50 rounded-md mb-2"

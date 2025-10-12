@@ -33,15 +33,22 @@ const documentFormSchema = z.object({
   file: z.any().refine((files) => files?.length == 1, "File is required."),
 })
 
-const uploadedDocuments = [
+const initialDocuments = [
     { title: "Data Mining Concepts", subject: "Data Mining", date: "2024-05-10" },
     { title: "OSI Model", subject: "Network Systems", date: "2024-05-08" },
     { title: "Intro to Distributed Systems", subject: "Distributed Computing", date: "2024-05-05" },
 ];
 
+const subjectMap: { [key: string]: string } = {
+  "data-mining": "Data Mining",
+  "network-systems": "Network Systems",
+  "distributed-computing": "Distributed Computing"
+};
+
 export default function DocumentsPage() {
   const { toast } = useToast()
   const [fileName, setFileName] = useState("");
+  const [uploadedDocuments, setUploadedDocuments] = useState(initialDocuments);
 
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
@@ -52,7 +59,14 @@ export default function DocumentsPage() {
   const fileRef = form.register("file");
 
   function onSubmit(data: z.infer<typeof documentFormSchema>) {
-    console.log(data);
+    const newDocument = {
+      title: data.title,
+      subject: subjectMap[data.subject],
+      date: new Date().toISOString().split('T')[0],
+    };
+
+    setUploadedDocuments(prev => [newDocument, ...prev]);
+    
     toast({
       title: "Document Uploaded",
       description: `${data.file[0].name} has been successfully uploaded.`,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import {
   Card,
@@ -27,15 +28,24 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 
 const studentData = [
-  { name: 'Aarav', subject: 'Data Mining', score: 85, progress: 85, status: 'On Track', details: { phone: '98********', email: 'aarav@test.com' } },
-  { name: 'Priya', subject: 'Data Mining', score: 92, progress: 92, status: 'Excelling', details: { phone: '98********', email: 'priya@test.com' } },
-  { name: 'Rohan', subject: 'Network Systems', score: 78, progress: 78, status: 'On Track', details: { phone: '98********', email: 'rohan@test.com' } },
-  { name: 'Sameer', subject: 'Data Mining', score: 64, progress: 64, status: 'Needs Help', details: { phone: '98********', email: 'sameer@test.com' } },
-  { name: 'Anjali', subject: 'Network Systems', score: 88, progress: 88, status: 'Excelling', details: { phone: '98********', email: 'anjali@test.com' } },
-  { name: 'Bikash', subject: 'Distributed Computing', score: 95, progress: 95, status: 'Excelling', details: { phone: '98********', email: 'bikash@test.com' } },
-  { name: 'Sita', subject: 'Distributed Computing', score: 72, progress: 72, status: 'On Track', details: { phone: '98********', email: 'sita@test.com' } },
+  { name: 'Aarav', subject: 'Data Mining', score: 85, progress: 85, status: 'On Track', details: { phone: '98********', email: 'aarav@test.com' }, gender: 'male' },
+  { name: 'Priya', subject: 'Data Mining', score: 92, progress: 92, status: 'Excelling', details: { phone: '98********', email: 'priya@test.com' }, gender: 'female' },
+  { name: 'Rohan', subject: 'Network Systems', score: 78, progress: 78, status: 'On Track', details: { phone: '98********', email: 'rohan@test.com' }, gender: 'male' },
+  { name: 'Sameer', subject: 'Data Mining', score: 64, progress: 64, status: 'Needs Help', details: { phone: '98********', email: 'sameer@test.com' }, gender: 'male' },
+  { name: 'Anjali', subject: 'Network Systems', score: 88, progress: 88, status: 'Excelling', details: { phone: '98********', email: 'anjali@test.com' }, gender: 'female' },
+  { name: 'Bikash', subject: 'Distributed Computing', score: 95, progress: 95, status: 'Excelling', details: { phone: '98********', email: 'bikash@test.com' }, gender: 'male' },
+  { name: 'Sita', subject: 'Distributed Computing', score: 72, progress: 72, status: 'On Track', details: { phone: '98********', email: 'sita@test.com' }, gender: 'female' },
 ];
 
 const chartData = [
@@ -47,6 +57,8 @@ const chartData = [
 ];
 
 export default function DashboardPage() {
+  const [showAllStudents, setShowAllStudents] = useState(false);
+
   return (
     <div className="container mx-auto p-4 md:p-8">
       <header className="mb-8">
@@ -100,7 +112,7 @@ export default function DashboardPage() {
                 <CardTitle>Student Information</CardTitle>
                 <CardDescription>Detailed information for each student.</CardDescription>
               </div>
-              <div className="w-full md:w-auto">
+              <div className="flex w-full md:w-auto gap-2">
                  <Select defaultValue="data-mining">
                   <SelectTrigger className="w-full md:w-[240px]">
                     <SelectValue placeholder="Select Subject" />
@@ -111,6 +123,43 @@ export default function DashboardPage() {
                     <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
                   </SelectContent>
                 </Select>
+                 <Dialog>
+                  <DialogTrigger asChild>
+                    <Button>View All</Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl">
+                    <DialogHeader>
+                      <DialogTitle>All Students</DialogTitle>
+                    </DialogHeader>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Subject</TableHead>
+                          <TableHead>Score</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Contact</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {studentData.map((student) => (
+                          <TableRow key={student.name}>
+                            <TableCell>{student.name}</TableCell>
+                            <TableCell>{student.subject}</TableCell>
+                            <TableCell>{student.score}%</TableCell>
+                            <TableCell>
+                              <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
+                            </TableCell>
+                             <TableCell>
+                              <p><strong>Phone:</strong> {student.details.phone}</p>
+                              <p><strong>Email:</strong> {student.details.email}</p>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </CardHeader>
@@ -135,7 +184,7 @@ export default function DashboardPage() {
                   <AccordionContent>
                     <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md">
                       <Avatar>
-                        <AvatarImage src={`https://i.pravatar.cc/150?u=${student.name}`} />
+                        <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />
                         <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
                       </Avatar>
                       <div>

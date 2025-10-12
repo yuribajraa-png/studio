@@ -75,13 +75,19 @@ export default function QuestionsPage() {
     form.trigger(["topic", "subject", "type", "numberOfQuestions"]).then(isValid => {
       if (isValid) {
         setIsCreating(true);
-        append({ question: "", options: [{value: ""}, {value: ""}, {value: ""}, {value: ""}], correctAnswer: "" });
+        append({ question: "", options: examType === 'quiz' ? [{value: ""}, {value: ""}, {value: ""}, {value: ""}] : [], correctAnswer: "" });
       }
     });
   }
 
   const handleNextQuestion = () => {
-      form.trigger(`questions.${currentQuestionIndex}`).then(isValid => {
+      const fieldToTrigger: (keyof z.infer<typeof questionSchema>)[] = ['question'];
+      if(examType === 'quiz') {
+        fieldToTrigger.push('options');
+        fieldToTrigger.push('correctAnswer');
+      }
+
+      form.trigger(fieldToTrigger.map(field => `questions.${currentQuestionIndex}.${field}`)).then(isValid => {
         if(isValid) {
             if (currentQuestionIndex < totalQuestions - 1) {
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -96,16 +102,20 @@ export default function QuestionsPage() {
   }
   
   const handleFinishExam = () => {
-    const newExam = form.getValues();
-    setAllExams(prev => [...prev, newExam]);
-    toast({
-      title: "Exam Created",
-      description: `The exam "${newExam.topic}" has been successfully created.`,
+     form.trigger(`questions.${currentQuestionIndex}`).then(isValid => {
+      if(isValid) {
+        const newExam = form.getValues();
+        setAllExams(prev => [...prev, newExam]);
+        toast({
+          title: "Exam Created",
+          description: `The exam "${newExam.topic}" has been successfully created.`,
+        });
+        form.reset();
+        setIsCreating(false);
+        setCurrentQuestionIndex(0);
+        remove();
+      }
     });
-    form.reset();
-    setIsCreating(false);
-    setCurrentQuestionIndex(0);
-    remove();
   }
 
   const handleBack = () => {
@@ -222,7 +232,7 @@ export default function QuestionsPage() {
                                     {exam.questions.map((q, qIndex) => (
                                          <div className="p-4 bg-muted/50 rounded-md mb-2" key={qIndex}>
                                             <p><strong>Question {qIndex + 1}:</strong> {q.question}</p>
-                                            {exam.type === 'quiz' && q.options && (
+                                            {exam.type === 'quiz' && q.options && q.options.length > 0 && (
                                                 <>
                                                     <p><strong>Options:</strong></p>
                                                     <ul className="list-disc pl-5">
@@ -250,3 +260,5 @@ export default function QuestionsPage() {
     </div>
   )
 }
+
+    

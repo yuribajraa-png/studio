@@ -53,6 +53,14 @@ const examFormSchema = z.object({
 }, {
     message: "Marks per question is required when uniform marks are enabled.",
     path: ["marksPerQuestion"],
+}).refine(data => {
+    if (data.type === 'quiz') {
+        return data.questions.every(q => q.options && q.options.length > 0 && q.correctAnswer);
+    }
+    return true;
+}, {
+    message: "All quiz questions must have options and a correct answer.",
+    path: ["questions"],
 });
 
 export type Exam = z.infer<typeof examFormSchema>;
@@ -72,19 +80,20 @@ export default function NewQuestionPage() {
     },
   })
 
-  const { fields, append, remove, update } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "questions"
   });
   
-  const { type: examType, uniformMarks, marksPerQuestion, questions } = form.watch();
+  const { type: examType, uniformMarks, marksPerQuestion } = form.watch();
 
   const addNewQuestion = () => {
+    const marks = uniformMarks && marksPerQuestion ? marksPerQuestion : 1;
     append({
         question: "",
         options: examType === 'quiz' ? [{value: ""}, {value: ""}, {value: ""}, {value: ""}] : [],
         correctAnswer: "",
-        marks: uniformMarks && marksPerQuestion ? marksPerQuestion : 1,
+        marks: marks,
         suggestion: "",
     });
   }
@@ -139,7 +148,7 @@ export default function NewQuestionPage() {
                     <FormField control={form.control} name="subject" render={({ field }) => ( <FormItem><FormLabel>Subject</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a subject" /></SelectTrigger></FormControl><SelectContent><SelectItem value="data-mining">Data Mining</SelectItem><SelectItem value="network-systems">Network Systems</SelectItem><SelectItem value="distributed-computing">Distributed Computing</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
                 </div>
 
-                <FormField control={form.control} name="type" render={({ field }) => (<FormItem className="space-y-3"><FormLabel>Type</FormLabel><FormControl><RadioGroup onValueChange={e => { field.onChange(e); update()}} defaultValue={field.value} className="flex gap-4"><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="quiz" /></FormControl><FormLabel className="font-normal">Quiz</FormLabel></FormItem><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="exam" /></FormControl><FormLabel className="font-normal">Exam</FormLabel></FormItem></RadioGroup></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="type" render={({ field }) => (<FormItem className="space-y-3"><FormLabel>Type</FormLabel><FormControl><RadioGroup onValueChange={e => { field.onChange(e); remove(); addNewQuestion(); }} defaultValue={field.value} className="flex gap-4"><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="quiz" /></FormControl><FormLabel className="font-normal">Quiz</FormLabel></FormItem><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="exam" /></FormControl><FormLabel className="font-normal">Exam</FormLabel></FormItem></RadioGroup></FormControl><FormMessage /></FormItem>)} />
 
                 <div className="flex flex-col md:flex-row gap-4 items-center">
                     <FormField
@@ -153,14 +162,25 @@ export default function NewQuestionPage() {
                             <FormControl>
                             <Switch
                                 checked={field.value}
-                                onCheckedChange={field.onChange}
+                                onCheckedChange={(checked) => {
+                                    field.onChange(checked);
+                                    if(checked && marksPerQuestion) {
+                                        form.setValue('questions', form.getValues('questions').map(q => ({...q, marks: marksPerQuestion})))
+                                    }
+                                }}
                             />
                             </FormControl>
                         </FormItem>
                         )}
                     />
                     {uniformMarks && (
-                        <FormField control={form.control} name="marksPerQuestion" render={({ field }) => (<FormItem className="flex-1 w-full"><FormLabel>Marks Per Question</FormLabel><FormControl><Input type="number" min="1" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="marksPerQuestion" render={({ field }) => (<FormItem className="flex-1 w-full"><FormLabel>Marks Per Question</FormLabel><FormControl><Input type="number" min="1" {...field} onChange={(e) => {
+                            const value = e.target.value;
+                            field.onChange(e);
+                            if(uniformMarks && value) {
+                                form.setValue('questions', form.getValues('questions').map(q => ({...q, marks: parseInt(value, 10) || 1 })))
+                            }
+                        }} /></FormControl><FormMessage /></FormItem>)} />
                     )}
                 </div>
               </CardContent>
@@ -234,7 +254,7 @@ export default function NewQuestionPage() {
                               <FormItem>
                                   <FormLabel>Marks</FormLabel>
                                   <FormControl>
-                                  <Input type="number" min="1" {...field} disabled={uniformMarks} />
+                                  <Input type="number" min="1" {...field} disabled={uniformMarks} onChange={(e) => field.onChange(parseInt(e.target.value, 10))} />
                                   </FormControl>
                                   <FormMessage />
                               </FormItem>
@@ -262,7 +282,7 @@ export default function NewQuestionPage() {
 
             <div className="flex justify-between items-center mt-8">
               <Button type="button" variant="outline" onClick={addNewQuestion}>
-                <PlusCircle className="mr-2" /> Add Another Question
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Another Question
               </Button>
               <Button type="submit">Save Exam</Button>
             </div>
@@ -272,3 +292,5 @@ export default function NewQuestionPage() {
     </div>
   )
 }
+
+    

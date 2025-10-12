@@ -55,17 +55,13 @@ export function Header() {
           <Link href="/dashboard" className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              fill="currentColor"
               className="h-6 w-6 text-primary"
             >
-              <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" />
-              <path d="M12 16V12" />
-              <path d="M12 8H12.01" />
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm4.6 13.44L15.5 14l1.1-1.44-1.44-1.1L14 12.5l-1.44-1.1-1.1 1.44L12.5 14l-1.1 1.44 1.44 1.1L14 15.5l1.44 1.1 1.16-1.44zM8 8.5l1.5-1.5L11 8.5 9.5 10 8 8.5zm8 0l1.5-1.5L19 8.5 17.5 10 16 8.5z" />
             </svg>
             <span className="font-bold text-lg font-headline">Reviso</span>
           </Link>

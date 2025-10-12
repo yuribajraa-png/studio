@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import * as z from "zod"
 import { useState } from "react"
-import { ChevronsUpDown, Check, Trash2, PlusCircle, ArrowLeft } from "lucide-react"
+import { ArrowLeft, Check, ChevronsUpDown, PlusCircle, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -29,11 +29,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useToast } from "@/hooks/use-toast"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
+import { Switch } from "@/components/ui/switch"
 
 const questionSchema = z.object({
   question: z.string().min(10, { message: "Question must be at least 10 characters." }),
   options: z.array(z.object({ value: z.string().min(1, "Option cannot be empty.") })).optional(),
   correctAnswer: z.string().optional(),
+  marks: z.coerce.number().min(1, "Marks must be at least 1."),
+  suggestion: z.string().optional(),
 });
 
 const examFormSchema = z.object({
@@ -41,8 +44,18 @@ const examFormSchema = z.object({
   subject: z.string({ required_error: "Please select a subject." }),
   type: z.enum(["quiz", "exam"], { required_error: "Please select a type." }),
   numberOfQuestions: z.coerce.number().min(1, "Must have at least 1 question."),
+  uniformMarks: z.boolean().default(false),
+  marksPerQuestion: z.coerce.number().optional(),
   questions: z.array(questionSchema)
-})
+}).refine(data => {
+    if (data.uniformMarks) {
+        return data.marksPerQuestion !== undefined && data.marksPerQuestion > 0;
+    }
+    return true;
+}, {
+    message: "Marks per question is required when uniform marks are enabled.",
+    path: ["marksPerQuestion"],
+});
 
 type Exam = z.infer<typeof examFormSchema>;
 
@@ -58,41 +71,57 @@ export default function QuestionsPage() {
       topic: "",
       type: "quiz",
       numberOfQuestions: 1,
+      uniformMarks: false,
       questions: [],
     },
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control: form.control,
     name: "questions"
   });
 
-  const examConfig = form.watch(["type", "numberOfQuestions"]);
-  const examType = examConfig[0];
-  const totalQuestions = examConfig[1];
+  const { type: examType, numberOfQuestions: totalQuestions, uniformMarks, marksPerQuestion } = form.watch();
 
   const handleStartCreation = () => {
-    form.trigger(["topic", "subject", "type", "numberOfQuestions"]).then(isValid => {
+    form.trigger(["topic", "subject", "type", "numberOfQuestions", "marksPerQuestion"]).then(isValid => {
       if (isValid) {
         setIsCreating(true);
-        append({ question: "", options: examType === 'quiz' ? [{value: ""}, {value: ""}, {value: ""}, {value: ""}] : [], correctAnswer: "" });
+        append({ 
+            question: "", 
+            options: examType === 'quiz' ? [{value: ""}, {value: ""}, {value: ""}, {value: ""}] : [], 
+            correctAnswer: "",
+            marks: uniformMarks && marksPerQuestion ? marksPerQuestion : 1,
+            suggestion: ""
+        });
       }
     });
   }
 
   const handleNextQuestion = () => {
-      const fieldToTrigger: (keyof z.infer<typeof questionSchema>)[] = ['question'];
+      const fieldsToTrigger: (keyof z.infer<typeof questionSchema>)[] = ['question', 'marks'];
       if(examType === 'quiz') {
-        fieldToTrigger.push('options');
-        fieldToTrigger.push('correctAnswer');
+        fieldsToTrigger.push('options');
+        fieldsToTrigger.push('correctAnswer');
       }
 
-      form.trigger(fieldToTrigger.map(field => `questions.${currentQuestionIndex}.${field}`)).then(isValid => {
+      form.trigger(fieldsToTrigger.map(field => `questions.${currentQuestionIndex}.${field}`)).then(isValid => {
         if(isValid) {
+            const currentQuestionData = form.getValues(`questions.${currentQuestionIndex}`);
+            if (uniformMarks && marksPerQuestion) {
+                update(currentQuestionIndex, { ...currentQuestionData, marks: marksPerQuestion });
+            }
+
             if (currentQuestionIndex < totalQuestions - 1) {
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
                  if (fields.length < totalQuestions) {
-                    append({ question: "", options: examType === 'quiz' ? [{value: ""}, {value: ""}, {value: ""}, {value: ""}] : [], correctAnswer: "" });
+                    append({ 
+                        question: "", 
+                        options: examType === 'quiz' ? [{value: ""}, {value: ""}, {value: ""}, {value: ""}] : [], 
+                        correctAnswer: "",
+                        marks: uniformMarks && marksPerQuestion ? marksPerQuestion : 1,
+                        suggestion: ""
+                    });
                 }
             } else {
                 handleFinishExam();
@@ -102,7 +131,13 @@ export default function QuestionsPage() {
   }
   
   const handleFinishExam = () => {
-     form.trigger(`questions.${currentQuestionIndex}`).then(isValid => {
+     const fieldsToTrigger: (keyof z.infer<typeof questionSchema>)[] = ['question', 'marks'];
+      if(examType === 'quiz') {
+        fieldsToTrigger.push('options');
+        fieldsToTrigger.push('correctAnswer');
+      }
+      
+      form.trigger(fieldsToTrigger.map(field => `questions.${currentQuestionIndex}.${field}`)).then(isValid => {
       if(isValid) {
         const newExam = form.getValues();
         setAllExams(prev => [...prev, newExam]);
@@ -153,10 +188,32 @@ export default function QuestionsPage() {
                             <FormField control={form.control} name="subject" render={({ field }) => ( <FormItem><FormLabel>Subject</FormLabel><Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Select a subject" /></SelectTrigger></FormControl><SelectContent><SelectItem value="data-mining">Data Mining</SelectItem><SelectItem value="network-systems">Network Systems</SelectItem><SelectItem value="distributed-computing">Distributed Computing</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
                             <FormField control={form.control} name="type" render={({ field }) => (<FormItem className="space-y-3"><FormLabel>Type</FormLabel><FormControl><RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex gap-4"><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="quiz" /></FormControl><FormLabel className="font-normal">Quiz</FormLabel></FormItem><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="exam" /></FormControl><FormLabel className="font-normal">Exam</FormLabel></FormItem></RadioGroup></FormControl><FormMessage /></FormItem>)} />
                             <FormField control={form.control} name="numberOfQuestions" render={({ field }) => (<FormItem><FormLabel>Number of Questions</FormLabel><FormControl><Input type="number" min="1" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                            
+                            <FormField
+                                control={form.control}
+                                name="uniformMarks"
+                                render={({ field }) => (
+                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                    <div className="space-y-0.5">
+                                    <FormLabel>Uniform Marks for All Questions?</FormLabel>
+                                    </div>
+                                    <FormControl>
+                                    <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                    </FormControl>
+                                </FormItem>
+                                )}
+                            />
+                            {uniformMarks && (
+                                <FormField control={form.control} name="marksPerQuestion" render={({ field }) => (<FormItem><FormLabel>Marks Per Question</FormLabel><FormControl><Input type="number" min="1" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                            )}
+
                             <Button type="button" onClick={handleStartCreation} className="w-full">Start Creating Questions</Button>
                         </>
                     ) : fields.map((field, index) => (
-                        <div key={field.id} className={currentQuestionIndex === index ? 'block' : 'hidden'}>
+                        <div key={field.id} className={currentQuestionIndex === index ? 'space-y-6' : 'hidden'}>
                             <FormField
                                 control={form.control}
                                 name={`questions.${index}.question`}
@@ -173,7 +230,7 @@ export default function QuestionsPage() {
 
                             {examType === 'quiz' && (
                                 <>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <FormField control={form.control} name={`questions.${index}.options.0.value`} render={({ field }) => ( <FormItem><FormLabel>Option 1</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
                                     <FormField control={form.control} name={`questions.${index}.options.1.value`} render={({ field }) => ( <FormItem><FormLabel>Option 2</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
                                     <FormField control={form.control} name={`questions.${index}.options.2.value`} render={({ field }) => ( <FormItem><FormLabel>Option 3</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
@@ -183,7 +240,7 @@ export default function QuestionsPage() {
                                     control={form.control}
                                     name={`questions.${index}.correctAnswer`}
                                     render={({ field }) => (
-                                    <FormItem className="space-y-3 pt-4">
+                                    <FormItem className="space-y-3">
                                         <FormLabel>Correct Answer</FormLabel>
                                         <FormControl>
                                         <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col md:flex-row gap-4">
@@ -199,6 +256,35 @@ export default function QuestionsPage() {
                                 />
                                 </>
                             )}
+                            
+                            <FormField
+                                control={form.control}
+                                name={`questions.${index}.marks`}
+                                render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Marks</FormLabel>
+                                    <FormControl>
+                                    <Input type="number" min="1" {...field} disabled={uniformMarks} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                            
+                            <FormField
+                                control={form.control}
+                                name={`questions.${index}.suggestion`}
+                                render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Suggestion (Optional)</FormLabel>
+                                    <FormControl>
+                                    <Textarea placeholder="e.g., Mention all the steps to get full marks." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+
                             <Button type="button" onClick={handleNextQuestion} className="w-full mt-6">
                                 {currentQuestionIndex < totalQuestions - 1 ? "Next Question" : "Finish & Save Exam"}
                             </Button>
@@ -231,11 +317,14 @@ export default function QuestionsPage() {
                                 <AccordionContent>
                                     {exam.questions.map((q, qIndex) => (
                                          <div className="p-4 bg-muted/50 rounded-md mb-2" key={qIndex}>
-                                            <p><strong>Question {qIndex + 1}:</strong> {q.question}</p>
+                                            <div className="flex justify-between items-start">
+                                                <p><strong>Question {qIndex + 1}:</strong> {q.question}</p>
+                                                <Badge variant="outline">Marks: {q.marks}</Badge>
+                                            </div>
                                             {exam.type === 'quiz' && q.options && q.options.length > 0 && (
-                                                <>
-                                                    <p><strong>Options:</strong></p>
-                                                    <ul className="list-disc pl-5">
+                                                <div className="mt-2">
+                                                    <p className="font-medium">Options:</p>
+                                                    <ul className="list-disc pl-5 mt-1">
                                                         {q.options.map((opt, optIndex) => (
                                                             <li key={optIndex} className={q.correctAnswer === `${optIndex + 1}` ? 'font-bold' : ''}>
                                                                 {opt.value}
@@ -243,7 +332,13 @@ export default function QuestionsPage() {
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                </>
+                                                </div>
+                                            )}
+                                            {q.suggestion && (
+                                                <div className="mt-2">
+                                                    <p className="font-medium">Suggestion:</p>
+                                                    <p className="text-sm text-muted-foreground">{q.suggestion}</p>
+                                                </div>
                                             )}
                                         </div>
                                     ))}

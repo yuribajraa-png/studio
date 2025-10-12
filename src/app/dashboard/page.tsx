@@ -63,7 +63,7 @@ export default function DashboardPage() {
   const [showAllStudents, setShowAllStudents] = useState(false);
 
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-7xl">
+    <div className="container mx-auto p-4 md:p-8 max-w-6xl">
       <header className="mb-8">
         <h1 className="text-3xl font-bold font-headline">Student Analytics</h1>
         <p className="text-muted-foreground">

@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 
 const allStudents = [
@@ -76,14 +77,6 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
         setCurrentIndex(prev => (prev === allStudents.length - 1 ? 0 : prev + 1));
     };
 
-    const chartData = Object.keys(student.performance).map(subject => {
-        const scores = { subject };
-        student.performance[subject as keyof typeof student.performance].forEach(p => {
-            scores[p.term] = p.score;
-        });
-        return scores;
-    });
-
     const trendData = student.performance[Object.keys(student.performance)[0]].map((_, termIndex) => {
         const dataPoint: {term: string, [key: string]: number | string} = { term: ['First Term', 'Mid Term', 'Final Term'][termIndex]};
         Object.keys(student.performance).forEach(subject => {
@@ -120,31 +113,61 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
                 </CardHeader>
             </Card>
 
-             <Card>
-                <CardHeader>
-                    <CardTitle>Subject Performance Trend</CardTitle>
-                    <CardDescription>Score progression across different terms.</CardDescription>
-                </CardHeader>
-                <CardContent className="pl-2">
-                    <ResponsiveContainer width="100%" height={400}>
-                        <LineChart data={trendData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="term" />
-                            <YAxis domain={[0, 100]} />
-                            <Tooltip
-                                contentStyle={{ 
-                                    background: 'hsl(var(--background))',
-                                    borderColor: 'hsl(var(--border))',
-                                }}
-                            />
-                            <Legend />
-                            {Object.keys(student.performance).map((subject, i) => (
-                                <Line key={subject} type="monotone" dataKey={subject} stroke={`hsl(var(--chart-${(i % 5) + 1}))`} strokeWidth={2} />
-                            ))}
-                        </LineChart>
-                    </ResponsiveContainer>
-                </CardContent>
-            </Card>
+            <div className="grid md:grid-cols-2 gap-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Term-wise Scores</CardTitle>
+                        <CardDescription>Detailed scores in each subject per term.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Subject</TableHead>
+                                    <TableHead>First Term</TableHead>
+                                    <TableHead>Mid Term</TableHead>
+                                    <TableHead>Final Term</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {Object.keys(student.performance).map(subject => (
+                                    <TableRow key={subject}>
+                                        <TableCell className="font-medium">{subject}</TableCell>
+                                        <TableCell>{student.performance[subject as keyof typeof student.performance].find(p => p.term === 'First')?.score || 'N/A'}</TableCell>
+                                        <TableCell>{student.performance[subject as keyof typeof student.performance].find(p => p.term === 'Mid')?.score || 'N/A'}</TableCell>
+                                        <TableCell>{student.performance[subject as keyof typeof student.performance].find(p => p.term === 'Final')?.score || 'N/A'}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Performance Trend</CardTitle>
+                        <CardDescription>Score progression across different terms.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pl-2 h-[300px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={trendData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="term" />
+                                <YAxis domain={[0, 100]} />
+                                <Tooltip
+                                    contentStyle={{ 
+                                        background: 'hsl(var(--background))',
+                                        borderColor: 'hsl(var(--border))',
+                                    }}
+                                />
+                                <Legend />
+                                {Object.keys(student.performance).map((subject, i) => (
+                                    <Line key={subject} type="monotone" dataKey={subject} stroke={`hsl(var(--chart-${(i % 5) + 1}))`} strokeWidth={2} />
+                                ))}
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     )
 }

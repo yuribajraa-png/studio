@@ -97,6 +97,32 @@ export default function DashboardPage() {
         </p>
       </header>
 
+      <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+          <SelectTrigger className="w-full md:w-[180px]">
+            <SelectValue placeholder="Select Subject" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all-subjects">All Subjects</SelectItem>
+            <SelectItem value="data-mining">Data Mining</SelectItem>
+            <SelectItem value="network-systems">Network Systems</SelectItem>
+            <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={selectedExamType} onValueChange={setSelectedExamType}>
+          <SelectTrigger className="w-full md:w-[180px]">
+            <SelectValue placeholder="Select Exam Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all-exams">All Exams</SelectItem>
+            <SelectItem value="first-term">First Term</SelectItem>
+            <SelectItem value="mid-term">Mid Term</SelectItem>
+            <SelectItem value="final-term">Final Term</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+
       <div className="grid gap-8">
         <Card>
           <CardHeader>
@@ -105,33 +131,9 @@ export default function DashboardPage() {
                     <CardTitle>Performance Distribution</CardTitle>
                     <CardDescription>Student scores based on selected filters.</CardDescription>
                 </div>
-                <div className="flex w-full flex-col md:flex-row md:w-auto gap-2">
-                    <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-                        <SelectTrigger className="w-full md:w-[180px]">
-                            <SelectValue placeholder="Select Subject" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all-subjects">All Subjects</SelectItem>
-                            <SelectItem value="data-mining">Data Mining</SelectItem>
-                            <SelectItem value="network-systems">Network Systems</SelectItem>
-                            <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Select value={selectedExamType} onValueChange={setSelectedExamType}>
-                        <SelectTrigger className="w-full md:w-[180px]">
-                            <SelectValue placeholder="Select Exam Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all-exams">All Exams</SelectItem>
-                            <SelectItem value="first-term">First Term</SelectItem>
-                            <SelectItem value="mid-term">Mid Term</SelectItem>
-                            <SelectItem value="final-term">Final Term</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Button asChild>
-                      <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance' } }}>View Detailed Report</Link>
-                    </Button>
-                </div>
+                <Button asChild>
+                  <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance' } }}>View Detailed Report</Link>
+                </Button>
             </div>
           </CardHeader>
           <CardContent className="pl-2">

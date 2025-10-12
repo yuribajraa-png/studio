@@ -51,27 +51,31 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center px-4 md:px-6">
-        <Link href="/dashboard" className="mr-6 flex items-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-6 w-6 text-primary"
-          >
-            <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" />
-            <path d="M12 16V12" />
-            <path d="M12 8H12.01" />
-          </svg>
-          <span className="font-bold text-lg font-headline">Reviso</span>
-        </Link>
-        <nav className="hidden md:flex items-center gap-2 text-sm">
+        <div className="flex items-center">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-6 w-6 text-primary"
+            >
+              <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" />
+              <path d="M12 16V12" />
+              <path d="M12 8H12.01" />
+            </svg>
+            <span className="font-bold text-lg font-headline">Reviso</span>
+          </Link>
+        </div>
+
+        <nav className="hidden md:flex flex-1 justify-center items-center gap-2 text-sm">
           {renderNavLinks()}
         </nav>
-        <div className="flex items-center ml-auto gap-2">
+
+        <div className="flex items-center gap-2">
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>

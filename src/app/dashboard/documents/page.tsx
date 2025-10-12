@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -33,13 +34,15 @@ const documentFormSchema = z.object({
 })
 
 const uploadedDocuments = [
-    { title: "Calculus Notes - Chapter 1", subject: "Mathematics", date: "2024-05-10" },
-    { title: "Newton's Laws of Motion", subject: "Physics", date: "2024-05-08" },
-    { title: "Periodic Table Explained", subject: "Chemistry", date: "2024-05-05" },
+    { title: "Data Mining Concepts", subject: "Data Mining", date: "2024-05-10" },
+    { title: "OSI Model", subject: "Network Systems", date: "2024-05-08" },
+    { title: "Intro to Distributed Systems", subject: "Distributed Computing", date: "2024-05-05" },
 ];
 
 export default function DocumentsPage() {
   const { toast } = useToast()
+  const [fileName, setFileName] = useState("");
+
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
     defaultValues: {
@@ -52,9 +55,10 @@ export default function DocumentsPage() {
     console.log(data);
     toast({
       title: "Document Uploaded",
-      description: "The document has been successfully uploaded.",
+      description: `${data.file[0].name} has been successfully uploaded.`,
     })
     form.reset()
+    setFileName("");
   }
 
   return (
@@ -86,9 +90,9 @@ export default function DocumentsPage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="mathematics">Mathematics</SelectItem>
-                            <SelectItem value="physics">Physics</SelectItem>
-                            <SelectItem value="chemistry">Chemistry</SelectItem>
+                            <SelectItem value="data-mining">Data Mining</SelectItem>
+                            <SelectItem value="network-systems">Network Systems</SelectItem>
+                            <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -115,12 +119,20 @@ export default function DocumentsPage() {
                       <FormItem>
                         <FormLabel>File</FormLabel>
                         <FormControl>
-                          <Input type="file" {...fileRef} />
+                          <Input type="file" {...fileRef} onChange={(e) => {
+                            field.onChange(e.target.files);
+                            if (e.target.files && e.target.files.length > 0) {
+                              setFileName(e.target.files[0].name);
+                            } else {
+                              setFileName("");
+                            }
+                          }} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+                   {fileName && <p className="text-sm text-muted-foreground">Selected file: {fileName}</p>}
                   <Button type="submit" className="w-full">Upload Document</Button>
                 </form>
               </Form>

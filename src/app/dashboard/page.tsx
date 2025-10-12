@@ -25,15 +25,17 @@ import {
 } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const studentData = [
-  { name: 'Alice', subject: 'Mathematics', score: 85, progress: 85, status: 'On Track' },
-  { name: 'Bob', subject: 'Mathematics', score: 92, progress: 92, status: 'Excelling' },
-  { name: 'Charlie', subject: 'Physics', score: 78, progress: 78, status: 'On Track' },
-  { name: 'David', subject: 'Mathematics', score: 64, progress: 64, status: 'Needs Help' },
-  { name: 'Eve', subject: 'Physics', score: 88, progress: 88, status: 'Excelling' },
-  { name: 'Frank', subject: 'Chemistry', score: 95, progress: 95, status: 'Excelling' },
-  { name: 'Grace', subject: 'Chemistry', score: 72, progress: 72, status: 'On Track' },
+  { name: 'Aarav', subject: 'Data Mining', score: 85, progress: 85, status: 'On Track', details: { phone: '98********', email: 'aarav@test.com' } },
+  { name: 'Priya', subject: 'Data Mining', score: 92, progress: 92, status: 'Excelling', details: { phone: '98********', email: 'priya@test.com' } },
+  { name: 'Rohan', subject: 'Network Systems', score: 78, progress: 78, status: 'On Track', details: { phone: '98********', email: 'rohan@test.com' } },
+  { name: 'Sameer', subject: 'Data Mining', score: 64, progress: 64, status: 'Needs Help', details: { phone: '98********', email: 'sameer@test.com' } },
+  { name: 'Anjali', subject: 'Network Systems', score: 88, progress: 88, status: 'Excelling', details: { phone: '98********', email: 'anjali@test.com' } },
+  { name: 'Bikash', subject: 'Distributed Computing', score: 95, progress: 95, status: 'Excelling', details: { phone: '98********', email: 'bikash@test.com' } },
+  { name: 'Sita', subject: 'Distributed Computing', score: 72, progress: 72, status: 'On Track', details: { phone: '98********', email: 'sita@test.com' } },
 ];
 
 const chartData = [
@@ -58,7 +60,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Performance Distribution</CardTitle>
-            <CardDescription>Number of students in each score range for Mathematics.</CardDescription>
+            <CardDescription>Number of students in each score range for Data Mining.</CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
             <ResponsiveContainer width="100%" height={350}>
@@ -99,46 +101,52 @@ export default function DashboardPage() {
                 <CardDescription>Detailed information for each student.</CardDescription>
               </div>
               <div className="w-full md:w-auto">
-                 <Select defaultValue="mathematics">
-                  <SelectTrigger className="w-full md:w-[180px]">
+                 <Select defaultValue="data-mining">
+                  <SelectTrigger className="w-full md:w-[240px]">
                     <SelectValue placeholder="Select Subject" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="mathematics">Mathematics</SelectItem>
-                    <SelectItem value="physics">Physics</SelectItem>
-                    <SelectItem value="chemistry">Chemistry</SelectItem>
+                    <SelectItem value="data-mining">Data Mining</SelectItem>
+                    <SelectItem value="network-systems">Network Systems</SelectItem>
+                    <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Student Name</TableHead>
-                  <TableHead className="hidden md:table-cell">Subject</TableHead>
-                  <TableHead className="hidden md:table-cell text-center">Score</TableHead>
-                  <TableHead>Progress</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {studentData.map((student) => (
-                  <TableRow key={student.name}>
-                    <TableCell className="font-medium">{student.name}</TableCell>
-                    <TableCell className="hidden md:table-cell">{student.subject}</TableCell>
-                    <TableCell className="hidden md:table-cell text-center">{student.score}%</TableCell>
-                    <TableCell>
-                      <Progress value={student.progress} className="w-full" />
-                    </TableCell>
-                    <TableCell className="text-right">
-                       <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <Accordion type="single" collapsible className="w-full">
+              {studentData.map((student, index) => (
+                <AccordionItem value={`item-${index}`} key={student.name}>
+                  <AccordionTrigger>
+                    <Table className="w-full">
+                      <TableBody>
+                        <TableRow className="border-none">
+                          <TableCell className="font-medium p-0 w-1/4">{student.name}</TableCell>
+                          <TableCell className="hidden md:table-cell p-0 w-1/4">{student.subject}</TableCell>
+                          <TableCell className="hidden md:table-cell text-center p-0 w-1/4">{student.score}%</TableCell>
+                          <TableCell className="p-0 w-1/4 text-right">
+                            <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md">
+                      <Avatar>
+                        <AvatarImage src={`https://i.pravatar.cc/150?u=${student.name}`} />
+                        <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p><strong>Phone:</strong> {student.details.phone}</p>
+                        <p><strong>Email:</strong> {student.details.email}</p>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </CardContent>
         </Card>
       </div>

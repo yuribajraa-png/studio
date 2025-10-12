@@ -86,9 +86,9 @@ export default function QuestionsPage() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="mathematics">Mathematics</SelectItem>
-                        <SelectItem value="physics">Physics</SelectItem>
-                        <SelectItem value="chemistry">Chemistry</SelectItem>
+                        <SelectItem value="data-mining">Data Mining</SelectItem>
+                        <SelectItem value="network-systems">Network Systems</SelectItem>
+                        <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

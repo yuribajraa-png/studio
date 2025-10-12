@@ -55,7 +55,7 @@ const examFormSchema = z.object({
     path: ["marksPerQuestion"],
 }).refine(data => {
     if (data.type === 'quiz') {
-        return data.questions.every(q => q.options && q.options.length > 0 && q.correctAnswer);
+        return data.questions.every(q => q.options && q.options.length >= 2 && q.options.some(o => o.value) && q.correctAnswer);
     }
     return true;
 }, {
@@ -74,6 +74,7 @@ export default function NewQuestionPage() {
     resolver: zodResolver(examFormSchema),
     defaultValues: {
       topic: "",
+      subject: "",
       type: "quiz",
       uniformMarks: false,
       questions: [],
@@ -89,13 +90,21 @@ export default function NewQuestionPage() {
 
   const addNewQuestion = () => {
     const marks = uniformMarks && marksPerQuestion ? marksPerQuestion : 1;
-    append({
+    const newQuestion: z.infer<typeof questionSchema> = {
         question: "",
-        options: examType === 'quiz' ? [{value: ""}, {value: ""}, {value: ""}, {value: ""}] : [],
-        correctAnswer: "",
         marks: marks,
         suggestion: "",
-    });
+    };
+
+    if (examType === 'quiz') {
+        newQuestion.options = [{value: ""}, {value: ""}, {value: ""}, {value: ""}];
+        newQuestion.correctAnswer = "";
+    } else {
+        newQuestion.options = [];
+        delete newQuestion.correctAnswer;
+    }
+
+    append(newQuestion);
   }
 
   // Add one question by default if none exist
@@ -111,6 +120,13 @@ export default function NewQuestionPage() {
             description: "Please add at least one question to the exam.",
         });
         return;
+    }
+
+    if (data.type === 'exam') {
+        data.questions.forEach(q => {
+            delete q.options;
+            delete q.correctAnswer;
+        });
     }
 
     // Persist to state (and in real app, to DB)
@@ -292,5 +308,3 @@ export default function NewQuestionPage() {
     </div>
   )
 }
-
-    

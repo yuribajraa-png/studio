@@ -52,6 +52,126 @@ const allStudents = [
         'Network Systems': [{term: 'First', score: 88}, {term: 'Mid', score: 85}, {term: 'Final', score: 90}],
     }
   },
+  { 
+    name: 'Bikash', 
+    gender: 'male',
+    details: { phone: '9855667788', email: 'bikash.rai@test.com' },
+    performance: {
+        'Distributed Computing': [{term: 'First', score: 95}, {term: 'Mid', score: 92}, {term: 'Final', score: 96}],
+    }
+  },
+  { 
+    name: 'Sita', 
+    gender: 'female',
+    details: { phone: '9844332211', email: 'sita.lama@test.com' },
+    performance: {
+        'Distributed Computing': [{term: 'First', score: 72}, {term: 'Mid', score: 78}, {term: 'Final', score: 75}],
+    }
+  },
+  { 
+    name: 'Nitesh', 
+    gender: 'male',
+    details: { phone: '9819283746', email: 'nitesh.yadav@test.com' },
+    performance: {
+        'Data Mining': [{term: 'First', score: 79}, {term: 'Mid', score: 81}, {term: 'Final', score: 85}],
+    }
+  },
+  { 
+    name: 'Sunita', 
+    gender: 'female',
+    details: { phone: '9801928374', email: 'sunita.shrestha@test.com' },
+    performance: {
+        'Network Systems': [{term: 'First', score: 81}, {term: 'Mid', score: 84}, {term: 'Final', score: 80}],
+    }
+  },
+  { 
+    name: 'Rajesh', 
+    gender: 'male',
+    details: { phone: '9860192837', email: 'rajesh.magar@test.com' },
+    performance: {
+        'Distributed Computing': [{term: 'First', score: 68}, {term: 'Mid', score: 65}, {term: 'Final', score: 71}],
+    }
+  },
+    { 
+    name: 'Student 11', 
+    gender: 'male',
+    details: { phone: '1111111111', email: 'student11@test.com' },
+    performance: {
+        'Data Mining': [{term: 'First', score: 15}, {term: 'Mid', score: 25}, {term: 'Final', score: 20}],
+    }
+  },
+  { 
+    name: 'Student 12', 
+    gender: 'female',
+    details: { phone: '2222222222', email: 'student12@test.com' },
+    performance: {
+        'Data Mining': [{term: 'First', score: 35}, {term: 'Mid', score: 40}, {term: 'Final', score: 45}],
+    }
+  },
+  { 
+    name: 'Student 13', 
+    gender: 'male',
+    details: { phone: '3333333333', email: 'student13@test.com' },
+    performance: {
+        'Network Systems': [{term: 'First', score: 55}, {term: 'Mid', score: 60}, {term: 'Final', score: 58}],
+    }
+  },
+  { 
+    name: 'Student 14', 
+    gender: 'female',
+    details: { phone: '4444444444', email: 'student14@test.com' },
+    performance: {
+        'Distributed Computing': [{term: 'First', score: 75}, {term: 'Mid', score: 78}, {term: 'Final', score: 80}],
+    }
+  },
+  { 
+    name: 'Student 15', 
+    gender: 'male',
+    details: { phone: '5555555555', email: 'student15@test.com' },
+    performance: {
+        'Data Mining': [{term: 'First', score: 89}, {term: 'Mid', score: 91}, {term: 'Final', score: 93}],
+    }
+  },
+  { 
+    name: 'Kiran', 
+    gender: 'male',
+    details: { phone: '6666666666', email: 'kiran@test.com' },
+    performance: {
+        'Network Systems': [{term: 'First', score: 91}, {term: 'Mid', score: 93}, {term: 'Final', score: 95}],
+    }
+  },
+  { 
+    name: 'Manish', 
+    gender: 'male',
+    details: { phone: '7777777777', email: 'manish@test.com' },
+    performance: {
+        'Distributed Computing': [{term: 'First', score: 58}, {term: 'Mid', score: 62}, {term: 'Final', score: 60}],
+    }
+  },
+  { 
+    name: 'Gita', 
+    gender: 'female',
+    details: { phone: '8888888888', email: 'gita@test.com' },
+    performance: {
+        'Data Mining': [{term: 'First', score: 98}, {term: 'Mid', score: 99}, {term: 'Final', score: 100}],
+    }
+  },
+  { 
+    name: 'Hari', 
+    gender: 'male',
+    details: { phone: '9999999999', email: 'hari@test.com' },
+    performance: {
+        'Network Systems': [{term: 'First', score: 45}, {term: 'Mid', score: 50}, {term: 'Final', score: 48}],
+    }
+  },
+  { 
+    name: 'Srijana', 
+    gender: 'female',
+    details: { phone: '1010101010', email: 'srijana@test.com' },
+    performance: {
+        'Distributed Computing': [{term: 'First', score: 82}, {term: 'Mid', score: 85}, {term: 'Final', score: 88}],
+    }
+  },
 ];
 
 
@@ -171,3 +291,5 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
         </div>
     )
 }
+
+    

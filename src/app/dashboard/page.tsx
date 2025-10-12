@@ -46,6 +46,11 @@ const studentData = [
   { name: 'Student 13', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 55, status: 'On Track', details: { phone: '3333333333', email: 'student13@test.com' }, gender: 'male' },
   { name: 'Student 14', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 75, status: 'On Track', details: { phone: '4444444444', email: 'student14@test.com' }, gender: 'female' },
   { name: 'Student 15', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 89, status: 'Excelling', details: { phone: '5555555555', email: 'student15@test.com' }, gender: 'male' },
+  { name: 'Kiran', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 91, status: 'Excelling', details: { phone: '6666666666', email: 'kiran@test.com' }, gender: 'male' },
+  { name: 'Manish', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'mid-term', score: 58, status: 'Needs Help', details: { phone: '7777777777', email: 'manish@test.com' }, gender: 'male' },
+  { name: 'Gita', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 98, status: 'Excelling', details: { phone: '8888888888', email: 'gita@test.com' }, gender: 'female' },
+  { name: 'Hari', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 45, status: 'Needs Help', details: { phone: '9999999999', email: 'hari@test.com' }, gender: 'male' },
+  { name: 'Srijana', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 82, status: 'Excelling', details: { phone: '1010101010', email: 'srijana@test.com' }, gender: 'female' },
 ];
 
 const calculateChartData = (students: typeof studentData) => {
@@ -227,3 +232,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    

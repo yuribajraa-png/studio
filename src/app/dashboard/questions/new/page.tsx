@@ -180,7 +180,7 @@ export default function NewQuestionPage() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <header className="mb-8">
+      <header className="mb-8 text-center">
         <h1 className="text-3xl font-bold font-headline">Create New Exam/Quiz</h1>
         <p className="text-muted-foreground">Build a new set of questions for your students.</p>
       </header>

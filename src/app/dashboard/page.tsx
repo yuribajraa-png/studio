@@ -39,16 +39,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const studentData = [
-  { name: 'Aarav', subject: 'Data Mining', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
-  { name: 'Priya', subject: 'Data Mining', score: 92, status: 'Excelling', details: { phone: '9809876543', email: 'priya.kaur@test.com' }, gender: 'female' },
-  { name: 'Rohan', subject: 'Network Systems', score: 78, status: 'On Track', details: { phone: '9845678901', email: 'rohan.thapa@test.com' }, gender: 'male' },
-  { name: 'Sameer', subject: 'Data Mining', score: 64, status: 'Needs Help', details: { phone: '9865432109', email: 'sameer.acharya@test.com' }, gender: 'male' },
-  { name: 'Anjali', subject: 'Network Systems', score: 88, status: 'Excelling', details: { phone: '9811223344', email: 'anjali.gurung@test.com' }, gender: 'female' },
-  { name: 'Bikash', subject: 'Distributed Computing', score: 95, status: 'Excelling', details: { phone: '9855667788', email: 'bikash.rai@test.com' }, gender: 'male' },
-  { name: 'Sita', subject: 'Distributed Computing', score: 72, status: 'On Track', details: { phone: '9844332211', email: 'sita.lama@test.com' }, gender: 'female' },
-  { name: 'Nitesh', subject: 'Data Mining', score: 79, status: 'On Track', details: { phone: '9819283746', email: 'nitesh.yadav@test.com' }, gender: 'male' },
-  { name: 'Sunita', subject: 'Network Systems', score: 81, status: 'On Track', details: { phone: '9801928374', email: 'sunita.shrestha@test.com' }, gender: 'female' },
-  { name: 'Rajesh', subject: 'Distributed Computing', score: 68, status: 'Needs Help', details: { phone: '9860192837', email: 'rajesh.magar@test.com' }, gender: 'male' },
+  { name: 'Aarav', subject: 'Data Mining', examType: 'first-term', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
+  { name: 'Priya', subject: 'Data Mining', examType: 'first-term', score: 92, status: 'Excelling', details: { phone: '9809876543', email: 'priya.kaur@test.com' }, gender: 'female' },
+  { name: 'Rohan', subject: 'Network Systems', examType: 'mid-term', score: 78, status: 'On Track', details: { phone: '9845678901', email: 'rohan.thapa@test.com' }, gender: 'male' },
+  { name: 'Sameer', subject: 'Data Mining', examType: 'mid-term', score: 64, status: 'Needs Help', details: { phone: '9865432109', email: 'sameer.acharya@test.com' }, gender: 'male' },
+  { name: 'Anjali', subject: 'Network Systems', examType: 'final-term', score: 88, status: 'Excelling', details: { phone: '9811223344', email: 'anjali.gurung@test.com' }, gender: 'female' },
+  { name: 'Bikash', subject: 'Distributed Computing', examType: 'first-term', score: 95, status: 'Excelling', details: { phone: '9855667788', email: 'bikash.rai@test.com' }, gender: 'male' },
+  { name: 'Sita', subject: 'Distributed Computing', examType: 'mid-term', score: 72, status: 'On Track', details: { phone: '9844332211', email: 'sita.lama@test.com' }, gender: 'female' },
+  { name: 'Nitesh', subject: 'Data Mining', examType: 'final-term', score: 79, status: 'On Track', details: { phone: '9819283746', email: 'nitesh.yadav@test.com' }, gender: 'male' },
+  { name: 'Sunita', subject: 'Network Systems', examType: 'first-term', score: 81, status: 'On Track', details: { phone: '9801928374', email: 'sunita.shrestha@test.com' }, gender: 'female' },
+  { name: 'Rajesh', subject: 'Distributed Computing', examType: 'final-term', score: 68, status: 'Needs Help', details: { phone: '9860192837', email: 'rajesh.magar@test.com' }, gender: 'male' },
 ];
 
 const chartData = [
@@ -60,7 +60,6 @@ const chartData = [
 ];
 
 export default function DashboardPage() {
-  const [showAllStudents, setShowAllStudents] = useState(false);
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-6xl">
@@ -74,8 +73,36 @@ export default function DashboardPage() {
       <div className="grid gap-8">
         <Card>
           <CardHeader>
-            <CardTitle>Performance Distribution</CardTitle>
-            <CardDescription>Number of students in each score range for Data Mining.</CardDescription>
+             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <CardTitle>Performance Distribution</CardTitle>
+                    <CardDescription>Student scores based on selected filters.</CardDescription>
+                </div>
+                <div className="flex w-full md:w-auto gap-2">
+                    <Select defaultValue="all-subjects">
+                        <SelectTrigger className="w-full md:w-[180px]">
+                            <SelectValue placeholder="Select Subject" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all-subjects">All Subjects</SelectItem>
+                            <SelectItem value="data-mining">Data Mining</SelectItem>
+                            <SelectItem value="network-systems">Network Systems</SelectItem>
+                            <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <Select defaultValue="all-exams">
+                        <SelectTrigger className="w-full md:w-[180px]">
+                            <SelectValue placeholder="Select Exam Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all-exams">All Exams</SelectItem>
+                            <SelectItem value="first-term">First Term</SelectItem>
+                            <SelectItem value="mid-term">Mid Term</SelectItem>
+                            <SelectItem value="final-term">Final Term</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
           </CardHeader>
           <CardContent className="pl-2">
             <ResponsiveContainer width="100%" height={350}>
@@ -113,20 +140,9 @@ export default function DashboardPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
                 <CardTitle>Student Information</CardTitle>
-                <CardDescription>Detailed information for each student.</CardDescription>
+                <CardDescription>Detailed information for each student based on filters.</CardDescription>
               </div>
-              <div className="flex w-full md:w-auto gap-2">
-                 <Select defaultValue="data-mining">
-                  <SelectTrigger className="w-full md:w-[240px]">
-                    <SelectValue placeholder="Select Subject" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="data-mining">Data Mining</SelectItem>
-                    <SelectItem value="network-systems">Network Systems</SelectItem>
-                    <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
-                  </SelectContent>
-                </Select>
-                 <Dialog>
+               <Dialog>
                   <DialogTrigger asChild>
                     <Button>View All</Button>
                   </DialogTrigger>
@@ -140,6 +156,7 @@ export default function DashboardPage() {
                           <TableRow>
                             <TableHead>Name</TableHead>
                             <TableHead>Subject</TableHead>
+                            <TableHead>Exam</TableHead>
                             <TableHead>Score</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Contact</TableHead>
@@ -150,6 +167,7 @@ export default function DashboardPage() {
                             <TableRow key={student.name}>
                               <TableCell>{student.name}</TableCell>
                               <TableCell>{student.subject}</TableCell>
+                               <TableCell>{student.examType.replace('-', ' ')}</TableCell>
                               <TableCell>{student.score}%</TableCell>
                               <TableCell>
                                 <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
@@ -165,12 +183,11 @@ export default function DashboardPage() {
                     </ScrollArea>
                   </DialogContent>
                 </Dialog>
-              </div>
             </div>
           </CardHeader>
           <CardContent>
             <Accordion type="single" collapsible className="w-full">
-              {studentData.map((student, index) => (
+              {studentData.slice(0, 5).map((student, index) => (
                 <AccordionItem value={`item-${index}`} key={student.name}>
                   <AccordionTrigger>
                     <Table className="w-full">

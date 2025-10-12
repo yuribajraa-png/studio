@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import {
   Card,
@@ -39,27 +39,70 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 const studentData = [
-  { name: 'Aarav', subject: 'Data Mining', examType: 'first-term', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
-  { name: 'Priya', subject: 'Data Mining', examType: 'first-term', score: 92, status: 'Excelling', details: { phone: '9809876543', email: 'priya.kaur@test.com' }, gender: 'female' },
-  { name: 'Rohan', subject: 'Network Systems', examType: 'mid-term', score: 78, status: 'On Track', details: { phone: '9845678901', email: 'rohan.thapa@test.com' }, gender: 'male' },
-  { name: 'Sameer', subject: 'Data Mining', examType: 'mid-term', score: 64, status: 'Needs Help', details: { phone: '9865432109', email: 'sameer.acharya@test.com' }, gender: 'male' },
-  { name: 'Anjali', subject: 'Network Systems', examType: 'final-term', score: 88, status: 'Excelling', details: { phone: '9811223344', email: 'anjali.gurung@test.com' }, gender: 'female' },
-  { name: 'Bikash', subject: 'Distributed Computing', examType: 'first-term', score: 95, status: 'Excelling', details: { phone: '9855667788', email: 'bikash.rai@test.com' }, gender: 'male' },
-  { name: 'Sita', subject: 'Distributed Computing', examType: 'mid-term', score: 72, status: 'On Track', details: { phone: '9844332211', email: 'sita.lama@test.com' }, gender: 'female' },
-  { name: 'Nitesh', subject: 'Data Mining', examType: 'final-term', score: 79, status: 'On Track', details: { phone: '9819283746', email: 'nitesh.yadav@test.com' }, gender: 'male' },
-  { name: 'Sunita', subject: 'Network Systems', examType: 'first-term', score: 81, status: 'On Track', details: { phone: '9801928374', email: 'sunita.shrestha@test.com' }, gender: 'female' },
-  { name: 'Rajesh', subject: 'Distributed Computing', examType: 'final-term', score: 68, status: 'Needs Help', details: { phone: '9860192837', email: 'rajesh.magar@test.com' }, gender: 'male' },
+  { name: 'Aarav', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
+  { name: 'Priya', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 92, status: 'Excelling', details: { phone: '9809876543', email: 'priya.kaur@test.com' }, gender: 'female' },
+  { name: 'Rohan', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 78, status: 'On Track', details: { phone: '9845678901', email: 'rohan.thapa@test.com' }, gender: 'male' },
+  { name: 'Sameer', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 64, status: 'Needs Help', details: { phone: '9865432109', email: 'sameer.acharya@test.com' }, gender: 'male' },
+  { name: 'Anjali', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 88, status: 'Excelling', details: { phone: '9811223344', email: 'anjali.gurung@test.com' }, gender: 'female' },
+  { name: 'Bikash', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'first-term', score: 95, status: 'Excelling', details: { phone: '9855667788', email: 'bikash.rai@test.com' }, gender: 'male' },
+  { name: 'Sita', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'mid-term', score: 72, status: 'On Track', details: { phone: '9844332211', email: 'sita.lama@test.com' }, gender: 'female' },
+  { name: 'Nitesh', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 79, status: 'On Track', details: { phone: '9819283746', email: 'nitesh.yadav@test.com' }, gender: 'male' },
+  { name: 'Sunita', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 81, status: 'On Track', details: { phone: '9801928374', email: 'sunita.shrestha@test.com' }, gender: 'female' },
+  { name: 'Rajesh', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 68, status: 'Needs Help', details: { phone: '9860192837', email: 'rajesh.magar@test.com' }, gender: 'male' },
+  { name: 'Student 11', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 15, status: 'Needs Help', details: { phone: '1111111111', email: 'student11@test.com' }, gender: 'male' },
+  { name: 'Student 12', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 35, status: 'Needs Help', details: { phone: '2222222222', email: 'student12@test.com' }, gender: 'female' },
+  { name: 'Student 13', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 55, status: 'On Track', details: { phone: '3333333333', email: 'student13@test.com' }, gender: 'male' },
+  { name: 'Student 14', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 75, status: 'On Track', details: { phone: '4444444444', email: 'student14@test.com' }, gender: 'female' },
+  { name: 'Student 15', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 89, status: 'Excelling', details: { phone: '5555555555', email: 'student15@test.com' }, gender: 'male' },
 ];
 
-const chartData = [
-  { name: "0-20", total: 3 },
-  { name: "21-40", total: 8 },
-  { name: "41-60", total: 12 },
-  { name: "61-80", total: 25 },
-  { name: "81-100", total: 18 },
+const initialChartData = [
+  { name: "0-20", total: 0 },
+  { name: "21-40", total: 0 },
+  { name: "41-60", total: 0 },
+  { name: "61-80", total: 0 },
+  { name: "81-100", total: 0 },
 ];
+
+const calculateChartData = (students: typeof studentData) => {
+    const bins = [
+        { name: "0-20", total: 0 },
+        { name: "21-40", total: 0 },
+        { name: "41-60", total: 0 },
+        { name: "61-80", total: 0 },
+        { name: "81-100", total: 0 },
+    ];
+    students.forEach(student => {
+        if(student.score >= 0 && student.score <= 20) bins[0].total++;
+        else if(student.score >= 21 && student.score <= 40) bins[1].total++;
+        else if(student.score >= 41 && student.score <= 60) bins[2].total++;
+        else if(student.score >= 61 && student.score <= 80) bins[3].total++;
+        else if(student.score >= 81 && student.score <= 100) bins[4].total++;
+    });
+    return bins;
+}
 
 export default function DashboardPage() {
+  const [selectedSubject, setSelectedSubject] = useState("all-subjects");
+  const [selectedExamType, setSelectedExamType] = useState("all-exams");
+  const [filteredStudents, setFilteredStudents] = useState(studentData);
+  const [chartData, setChartData] = useState(calculateChartData(studentData));
+
+  useEffect(() => {
+    let students = studentData;
+
+    if (selectedSubject !== 'all-subjects') {
+      students = students.filter(s => s.subjectValue === selectedSubject);
+    }
+    
+    if (selectedExamType !== 'all-exams') {
+      students = students.filter(s => s.examType === selectedExamType);
+    }
+
+    setFilteredStudents(students);
+    setChartData(calculateChartData(students));
+  }, [selectedSubject, selectedExamType]);
+
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-6xl">
@@ -79,7 +122,7 @@ export default function DashboardPage() {
                     <CardDescription>Student scores based on selected filters.</CardDescription>
                 </div>
                 <div className="flex w-full md:w-auto gap-2">
-                    <Select defaultValue="all-subjects">
+                    <Select value={selectedSubject} onValueChange={setSelectedSubject}>
                         <SelectTrigger className="w-full md:w-[180px]">
                             <SelectValue placeholder="Select Subject" />
                         </SelectTrigger>
@@ -90,7 +133,7 @@ export default function DashboardPage() {
                             <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Select defaultValue="all-exams">
+                    <Select value={selectedExamType} onValueChange={setSelectedExamType}>
                         <SelectTrigger className="w-full md:w-[180px]">
                             <SelectValue placeholder="Select Exam Type" />
                         </SelectTrigger>
@@ -163,7 +206,7 @@ export default function DashboardPage() {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {studentData.map((student) => (
+                          {filteredStudents.map((student) => (
                             <TableRow key={student.name}>
                               <TableCell>{student.name}</TableCell>
                               <TableCell>{student.subject}</TableCell>
@@ -187,36 +230,40 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <Accordion type="single" collapsible className="w-full">
-              {studentData.slice(0, 5).map((student, index) => (
-                <AccordionItem value={`item-${index}`} key={student.name}>
-                  <AccordionTrigger>
-                    <Table className="w-full">
-                      <TableBody>
-                        <TableRow className="border-none">
-                          <TableCell className="font-medium p-0 w-1/4">{student.name}</TableCell>
-                          <TableCell className="hidden md:table-cell p-0 w-1/4">{student.subject}</TableCell>
-                          <TableCell className="hidden md:table-cell text-center p-0 w-1/4">{student.score}%</TableCell>
-                          <TableCell className="p-0 w-1/4 text-right">
-                            <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md">
-                      <Avatar>
-                        <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />
-                        <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p><strong>Phone:</strong> {student.details.phone}</p>
-                        <p><strong>Email:</strong> {student.details.email}</p>
+              {filteredStudents.length > 0 ? (
+                filteredStudents.slice(0, 5).map((student, index) => (
+                  <AccordionItem value={`item-${index}`} key={student.name}>
+                    <AccordionTrigger>
+                      <Table className="w-full">
+                        <TableBody>
+                          <TableRow className="border-none">
+                            <TableCell className="font-medium p-0 w-1/4">{student.name}</TableCell>
+                            <TableCell className="hidden md:table-cell p-0 w-1/4">{student.subject}</TableCell>
+                            <TableCell className="hidden md:table-cell text-center p-0 w-1/4">{student.score}%</TableCell>
+                            <TableCell className="p-0 w-1/4 text-right">
+                              <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md">
+                        <Avatar>
+                          <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />
+                          <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p><strong>Phone:</strong> {student.details.phone}</p>
+                          <p><strong>Email:</strong> {student.details.email}</p>
+                        </div>
                       </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))
+              ) : (
+                <p className="text-center py-4 text-muted-foreground">No students found for the selected filters.</p>
+              )}
             </Accordion>
           </CardContent>
         </Card>
@@ -224,3 +271,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    

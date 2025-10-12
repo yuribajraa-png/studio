@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart2, HelpCircle, FileText, User, LogOut, Menu } from "lucide-react";
+import { BarChart2, HelpCircle, FileText, User, LogOut, Menu, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,41 +12,83 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const navLinks = [
   { href: "/dashboard", label: "Analytics", icon: BarChart2 },
-  { href: "/dashboard/questions", label: "Questions", icon: HelpCircle },
   { href: "/dashboard/documents", label: "Documents", icon: FileText },
 ];
 
 export function Header() {
   const pathname = usePathname();
 
-  const renderNavLinks = (isMobile = false) =>
-    navLinks.map((link) => {
-      const isActive =
-        link.href === "/dashboard"
-          ? pathname === link.href
-          : pathname.startsWith(link.href);
-      return (
-        <Link
-          key={link.href}
-          href={link.href}
-          className={cn(
-            "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-            isActive
-              ? "bg-primary text-primary-foreground"
-              : "text-foreground hover:bg-accent hover:text-accent-foreground",
-            isMobile && "text-base w-full justify-start"
-          )}
-        >
-          <link.icon className="h-4 w-4" />
-          {link.label}
-        </Link>
-      );
-    });
+  const isQuestionsActive = pathname.startsWith("/dashboard/questions");
+
+  const renderNavLinks = (isMobile = false) => (
+    <>
+      {navLinks.map((link) => {
+        const isActive =
+          link.href === "/dashboard"
+            ? pathname === link.href
+            : pathname.startsWith(link.href);
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={cn(
+              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+              isActive
+                ? "bg-primary text-primary-foreground"
+                : "text-foreground hover:bg-accent hover:text-accent-foreground",
+              isMobile && "text-base w-full justify-start"
+            )}
+          >
+            <link.icon className="h-4 w-4" />
+            {link.label}
+          </Link>
+        );
+      })}
+      
+      {isMobile ? (
+         <>
+          <Link href="/dashboard/questions/new" className={cn("flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-base w-full justify-start", pathname === "/dashboard/questions/new" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-accent hover:text-accent-foreground")}>
+            <HelpCircle className="h-4 w-4" /> New Exam/Quiz
+          </Link>
+          <Link href="/dashboard/questions/view" className={cn("flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-base w-full justify-start", pathname === "/dashboard/questions/view" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-accent hover:text-accent-foreground")}>
+            <FileText className="h-4 w-4" /> View Exams
+          </Link>
+        </>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isQuestionsActive
+                  ? "bg-accent text-accent-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              <HelpCircle className="h-4 w-4" />
+              <span>Questions</span>
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/questions/new">New Exam/Quiz</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/questions/view">View Exams</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </>
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -71,7 +113,7 @@ export function Header() {
           {renderNavLinks()}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-auto">
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>

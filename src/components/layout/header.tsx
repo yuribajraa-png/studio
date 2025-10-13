@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart2, HelpCircle, FileText, User, LogOut, Menu, ChevronDown, PieChart } from "lucide-react";
+import { BarChart2, HelpCircle, FileText, User, LogOut, Menu, ChevronDown, PieChart, Settings, Megaphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,15 +15,20 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { useTheme } from "next-themes";
 
 const navLinks = [
   { href: "/dashboard", label: "Analytics", icon: BarChart2 },
   { href: "/dashboard/analysis", label: "Detailed Analysis", icon: PieChart },
   { href: "/dashboard/documents", label: "Documents", icon: FileText },
+  { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone },
 ];
 
 export function Header() {
   const pathname = usePathname();
+  const { setTheme, theme } = useTheme();
 
   const isQuestionsActive = pathname.startsWith("/dashboard/questions");
 
@@ -96,24 +101,9 @@ export function Header() {
       <div className="container flex h-16 items-center px-4 md:px-6 max-w-7xl">
         <div className="flex items-center">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6 text-primary"
-            >
-                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
-                <path d="m15.5 7.5-3 3-1.5-1.5" />
-                <path d="M12 12_a_2.5 2.5 0 0 0-2.5 2.5_a_2.5 2.5 0 0 0 2.5 2.5_a_2.5 2.5 0 0 0 2.5-2.5_a_2.5 2.5 0 0 0-2.5-2.5Z" />
-                <path d="M19 12h-2" />
-                <path d="M5 12H3" />
-                <path d="m16.5 16.5-1-1" />
-                <path d="m8.5 8.5-1-1" />
-            </svg>
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+              <span className="text-white text-lg">✨</span>
+            </div>
             <span className="font-bold text-lg font-headline">Reviso</span>
           </Link>
         </div>
@@ -148,6 +138,12 @@ export function Header() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Admin Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
+               <DropdownMenuItem asChild>
+                <Link href="/dashboard/settings">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/">
                   <LogOut className="mr-2 h-4 w-4" />

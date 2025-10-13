@@ -17,7 +17,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const allStudents = [
   { 
-    name: 'Aarav', 
+    name: 'Aarav Sharma', 
     gender: 'male',
     details: { phone: '9812345670', email: 'aarav.sharma@test.com' },
     performance: {
@@ -27,7 +27,7 @@ const allStudents = [
     aiSummary: "Aarav is showing consistent improvement in Data Mining. Network Systems scores are steady but could be improved, especially in practical application areas."
   },
   { 
-    name: 'Priya', 
+    name: 'Priya Kaur', 
     gender: 'female',
     details: { phone: '9809876543', email: 'priya.kaur@test.com' },
     performance: {
@@ -37,7 +37,7 @@ const allStudents = [
     aiSummary: "Priya is an exceptional student, excelling in both Data Mining and Distributed Computing with a clear upward trend. She consistently achieves top marks."
   },
   { 
-    name: 'Rohan', 
+    name: 'Rohan Thapa', 
     gender: 'male',
     details: { phone: '9845678901', email: 'rohan.thapa@test.com' },
     performance: {
@@ -46,7 +46,7 @@ const allStudents = [
     aiSummary: "Rohan's performance in Network Systems is solid, peaking at the mid-term. There's a slight dip in the final term, which might warrant a review of his exam preparation strategy."
   },
   { 
-    name: 'Sameer', 
+    name: 'Sameer Acharya', 
     gender: 'male',
     details: { phone: '9865432109', email: 'sameer.acharya@test.com' },
     performance: {
@@ -55,7 +55,7 @@ const allStudents = [
     aiSummary: "Sameer's scores in Data Mining are below the class average. While there's a slight improvement in the final term, he may need additional support to grasp core concepts."
   },
   { 
-    name: 'Anjali', 
+    name: 'Anjali Gurung', 
     gender: 'female',
     details: { phone: '9811223344', email: 'anjali.gurung@test.com' },
     performance: {
@@ -64,7 +64,7 @@ const allStudents = [
     aiSummary: "Anjali shows strong and improving performance in Network Systems, finishing the year with an excellent score. Her mid-term dip was temporary."
   },
   { 
-    name: 'Bikash', 
+    name: 'Bikash Rai', 
     gender: 'male',
     details: { phone: '9855667788', email: 'bikash.rai@test.com' },
     performance: {
@@ -73,7 +73,7 @@ const allStudents = [
     aiSummary: "Bikash is a top performer in Distributed Computing, demonstrating a high level of understanding throughout all terms. His performance is consistently excellent."
   },
   { 
-    name: 'Sita', 
+    name: 'Sita Lama', 
     gender: 'female',
     details: { phone: '9844332211', email: 'sita.lama@test.com' },
     performance: {
@@ -82,7 +82,7 @@ const allStudents = [
     aiSummary: "Sita maintains a stable, on-track performance in Distributed Computing. While not at the top, her scores are consistent and show a good grasp of the subject."
   },
   { 
-    name: 'Nitesh', 
+    name: 'Nitesh Yadav', 
     gender: 'male',
     details: { phone: '9819283746', email: 'nitesh.yadav@test.com' },
     performance: {
@@ -91,7 +91,7 @@ const allStudents = [
     aiSummary: "Nitesh has a positive and steady growth trajectory in Data Mining. Each term shows a clear improvement, indicating strong effort and learning."
   },
   { 
-    name: 'Sunita', 
+    name: 'Sunita Shrestha', 
     gender: 'female',
     details: { phone: '9801928374', email: 'sunita.shrestha@test.com' },
     performance: {
@@ -100,7 +100,7 @@ const allStudents = [
     aiSummary: "Sunita's performance in Network Systems is good, with a peak during the mid-term. The slight drop in the final term could be an area to investigate."
   },
   { 
-    name: 'Rajesh', 
+    name: 'Rajesh Magar', 
     gender: 'male',
     details: { phone: '9860192837', email: 'rajesh.magar@test.com' },
     performance: {
@@ -109,90 +109,90 @@ const allStudents = [
     aiSummary: "Rajesh shows potential for improvement. After a dip in the mid-term, he has improved his score in the final term, which is a positive sign."
   },
     { 
-    name: 'Student 11', 
+    name: 'Ravi Singh', 
     gender: 'male',
-    details: { phone: '1111111111', email: 'student11@test.com' },
+    details: { phone: '1111111111', email: 'ravi.singh@test.com' },
     performance: {
         'Data Mining': [{term: 'First', score: 15}, {term: 'Mid', score: 25}, {term: 'Final', score: 20}],
     },
     aiSummary: "This student is struggling significantly with Data Mining. The scores are consistently low and urgent intervention is recommended to prevent falling further behind."
   },
   { 
-    name: 'Student 12', 
+    name: 'Mira Devi', 
     gender: 'female',
-    details: { phone: '2222222222', email: 'student12@test.com' },
+    details: { phone: '2222222222', email: 'mira.devi@test.com' },
     performance: {
         'Data Mining': [{term: 'First', score: 35}, {term: 'Mid', score: 40}, {term: 'Final', score: 45}],
     },
     aiSummary: "There is a slow but steady upward trend for this student in Data Mining. However, the scores remain in the 'Needs Help' category. Continued support is crucial."
   },
   { 
-    name: 'Student 13', 
+    name: 'Arjun Patel', 
     gender: 'male',
-    details: { phone: '3333333333', email: 'student13@test.com' },
+    details: { phone: '3333333333', email: 'arjun.patel@test.com' },
     performance: {
         'Network Systems': [{term: 'First', score: 55}, {term: 'Mid', score: 60}, {term: 'Final', score: 58}],
     },
     aiSummary: "This student's performance in Network Systems is hovering around the passing mark. There is no significant improvement trend, indicating a potential plateau in understanding."
   },
   { 
-    name: 'Student 14', 
+    name: 'Pooja Reddy', 
     gender: 'female',
-    details: { phone: '4444444444', email: 'student14@test.com' },
+    details: { phone: '4444444444', email: 'pooja.reddy@test.com' },
     performance: {
         'Distributed Computing': [{term: 'First', score: 75}, {term: 'Mid', score: 78}, {term: 'Final', score: 80}],
     },
     aiSummary: "A solid and reliable student, showing consistent and positive growth in Distributed Computing. The performance is on a good track."
   },
   { 
-    name: 'Student 15', 
+    name: 'Vikram Kumar', 
     gender: 'male',
-    details: { phone: '5555555555', email: 'student15@test.com' },
+    details: { phone: '5555555555', email: 'vikram.kumar@test.com' },
     performance: {
         'Data Mining': [{term: 'First', score: 89}, {term: 'Mid', score: 91}, {term: 'Final', score: 93}],
     },
     aiSummary: "An excellent student with a strong command of Data Mining. The scores are consistently high and show a slight upward trend, indicating mastery."
   },
   { 
-    name: 'Kiran', 
+    name: 'Kiran KC', 
     gender: 'male',
-    details: { phone: '6666666666', email: 'kiran@test.com' },
+    details: { phone: '6666666666', email: 'kiran.kc@test.com' },
     performance: {
         'Network Systems': [{term: 'First', score: 91}, {term: 'Mid', score: 93}, {term: 'Final', score: 95}],
     },
     aiSummary: "Kiran is a top-tier student in Network Systems. His scores are not only excellent but also show a consistent pattern of improvement each term."
   },
   { 
-    name: 'Manish', 
+    name: 'Manish Gupta', 
     gender: 'male',
-    details: { phone: '7777777777', email: 'manish@test.com' },
+    details: { phone: '7777777777', email: 'manish.gupta@test.com' },
     performance: {
         'Distributed Computing': [{term: 'First', score: 58}, {term: 'Mid', score: 62}, {term: 'Final', score: 60}],
     },
     aiSummary: "Manish's performance is inconsistent. While he shows he can score higher (as in the mid-term), his final score has dropped, suggesting a need for more consistent study habits."
   },
   { 
-    name: 'Gita', 
+    name: 'Gita Joshi', 
     gender: 'female',
-    details: { phone: '8888888888', email: 'gita@test.com' },
+    details: { phone: '8888888888', email: 'gita.joshi@test.com' },
     performance: {
         'Data Mining': [{term: 'First', score: 98}, {term: 'Mid', score: 99}, {term: 'Final', score: 100}],
     },
     aiSummary: "Gita's performance in Data Mining is flawless, culminating in a perfect score. She has demonstrated complete mastery of the subject."
   },
   { 
-    name: 'Hari', 
+    name: 'Hari Prasad', 
     gender: 'male',
-    details: { phone: '9999999999', email: 'hari@test.com' },
+    details: { phone: '9999999999', email: 'hari.prasad@test.com' },
     performance: {
         'Network Systems': [{term: 'First', score: 45}, {term: 'Mid', score: 50}, {term: 'Final', score: 48}],
     },
     aiSummary: "Hari is struggling with Network Systems. His scores are consistently below passing, and he would benefit from foundational review and extra help."
   },
   { 
-    name: 'Srijana', 
+    name: 'Srijana Tamang', 
     gender: 'female',
-    details: { phone: '1010101010', email: 'srijana@test.com' },
+    details: { phone: '1010101010', email: 'srijana.tamang@test.com' },
     performance: {
         'Distributed Computing': [{term: 'First', score: 82}, {term: 'Mid', score: 85}, {term: 'Final', score: 88}],
     },
@@ -400,5 +400,3 @@ export function StudentAnalysis({ selectedStudent }: { selectedStudent: string |
         </div>
     )
 }
-
-    

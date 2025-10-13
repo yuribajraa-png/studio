@@ -15,8 +15,8 @@ const performanceDataBySubject: any = {
         label: "All Subjects",
         averageScore: 78.5,
         passRate: 85,
-        topPerformer: { name: "Bikash", score: 95 },
-        lowestPerformer: { name: "Student 11", score: 15 },
+        topPerformer: { name: "Bikash Rai", score: 95 },
+        lowestPerformer: { name: "Ravi Singh", score: 15 },
         mostDifficultQuestion: { id: "Q5", topic: "Advanced Memory Management", attempts: 20, correct: 4 },
         questionStats: [
             { id: "Q1", topic: "Intro to Pointers", difficulty: "Easy", attempts: 20, correct: 19, correctRate: 95 },
@@ -30,8 +30,8 @@ const performanceDataBySubject: any = {
         label: "Data Mining",
         averageScore: 82.1,
         passRate: 90,
-        topPerformer: { name: "Gita", score: 99 },
-        lowestPerformer: { name: "Student 11", score: 20 },
+        topPerformer: { name: "Gita Joshi", score: 99 },
+        lowestPerformer: { name: "Ravi Singh", score: 20 },
         mostDifficultQuestion: { id: "DM3", topic: "Clustering Algorithms", attempts: 8, correct: 3 },
         questionStats: [
             { id: "DM1", topic: "Intro to Data Mining", difficulty: "Easy", attempts: 8, correct: 8, correctRate: 98 },
@@ -43,8 +43,8 @@ const performanceDataBySubject: any = {
         label: "Network Systems",
         averageScore: 75.4,
         passRate: 82,
-        topPerformer: { name: "Kiran", score: 93 },
-        lowestPerformer: { name: "Hari", score: 48 },
+        topPerformer: { name: "Kiran KC", score: 93 },
+        lowestPerformer: { name: "Hari Prasad", score: 48 },
         mostDifficultQuestion: { id: "NS2", topic: "Subnetting", attempts: 7, correct: 2 },
          questionStats: [
             { id: "NS1", topic: "OSI Model", difficulty: "Easy", attempts: 7, correct: 6, correctRate: 92 },
@@ -56,8 +56,8 @@ const performanceDataBySubject: any = {
         label: "Distributed Computing",
         averageScore: 79.8,
         passRate: 88,
-        topPerformer: { name: "Bikash", score: 96 },
-        lowestPerformer: { name: "Manish", score: 60 },
+        topPerformer: { name: "Bikash Rai", score: 96 },
+        lowestPerformer: { name: "Manish Gupta", score: 60 },
         mostDifficultQuestion: { id: "DC3", topic: "Consensus Algorithms", attempts: 5, correct: 1 },
         questionStats: [
             { id: "DC1", topic: "CAP Theorem", difficulty: "Medium", attempts: 5, correct: 4, correctRate: 88 },
@@ -201,5 +201,3 @@ export function PerformanceAnalysis() {
         </div>
     )
 }
-
-    

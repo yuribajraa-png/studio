@@ -34,26 +34,26 @@ import type { Exam } from "./questions/new/page";
 
 
 const studentData = [
-  { name: 'Aarav', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
-  { name: 'Priya', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 92, status: 'Excelling', details: { phone: '9809876543', email: 'priya.kaur@test.com' }, gender: 'female' },
-  { name: 'Rohan', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 78, status: 'On Track', details: { phone: '9845678901', email: 'rohan.thapa@test.com' }, gender: 'male' },
-  { name: 'Sameer', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 64, status: 'Needs Help', details: { phone: '9865432109', email: 'sameer.acharya@test.com' }, gender: 'male' },
-  { name: 'Anjali', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 88, status: 'Excelling', details: { phone: '9811223344', email: 'anjali.gurung@test.com' }, gender: 'female' },
-  { name: 'Bikash', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'first-term', score: 95, status: 'Excelling', details: { phone: '9855667788', email: 'bikash.rai@test.com' }, gender: 'male' },
-  { name: 'Sita', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'mid-term', score: 72, status: 'On Track', details: { phone: '9844332211', email: 'sita.lama@test.com' }, gender: 'female' },
-  { name: 'Nitesh', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 79, status: 'On Track', details: { phone: '9819283746', email: 'nitesh.yadav@test.com' }, gender: 'male' },
-  { name: 'Sunita', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 81, status: 'On Track', details: { phone: '9801928374', email: 'sunita.shrestha@test.com' }, gender: 'female' },
-  { name: 'Rajesh', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 68, status: 'Needs Help', details: { phone: '9860192837', email: 'rajesh.magar@test.com' }, gender: 'male' },
-  { name: 'Student 11', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 15, status: 'Needs Help', details: { phone: '1111111111', email: 'student11@test.com' }, gender: 'male' },
-  { name: 'Student 12', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 35, status: 'Needs Help', details: { phone: '2222222222', email: 'student12@test.com' }, gender: 'female' },
-  { name: 'Student 13', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 55, status: 'On Track', details: { phone: '3333333333', email: 'student13@test.com' }, gender: 'male' },
-  { name: 'Student 14', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 75, status: 'On Track', details: { phone: '4444444444', email: 'student14@test.com' }, gender: 'female' },
-  { name: 'Student 15', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 89, status: 'Excelling', details: { phone: '5555555555', email: 'student15@test.com' }, gender: 'male' },
-  { name: 'Kiran', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 91, status: 'Excelling', details: { phone: '6666666666', email: 'kiran@test.com' }, gender: 'male' },
-  { name: 'Manish', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'mid-term', score: 58, status: 'Needs Help', details: { phone: '7777777777', email: 'manish@test.com' }, gender: 'male' },
-  { name: 'Gita', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 98, status: 'Excelling', details: { phone: '8888888888', email: 'gita@test.com' }, gender: 'female' },
-  { name: 'Hari', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 45, status: 'Needs Help', details: { phone: '9999999999', email: 'hari@test.com' }, gender: 'male' },
-  { name: 'Srijana', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 82, status: 'Excelling', details: { phone: '1010101010', email: 'srijana@test.com' }, gender: 'female' },
+  { name: 'Aarav Sharma', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 85, status: 'On Track', details: { phone: '9812345670', email: 'aarav.sharma@test.com' }, gender: 'male' },
+  { name: 'Priya Kaur', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 92, status: 'Excelling', details: { phone: '9809876543', email: 'priya.kaur@test.com' }, gender: 'female' },
+  { name: 'Rohan Thapa', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 78, status: 'On Track', details: { phone: '9845678901', email: 'rohan.thapa@test.com' }, gender: 'male' },
+  { name: 'Sameer Acharya', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 64, status: 'Needs Help', details: { phone: '9865432109', email: 'sameer.acharya@test.com' }, gender: 'male' },
+  { name: 'Anjali Gurung', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 88, status: 'Excelling', details: { phone: '9811223344', email: 'anjali.gurung@test.com' }, gender: 'female' },
+  { name: 'Bikash Rai', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'first-term', score: 95, status: 'Excelling', details: { phone: '9855667788', email: 'bikash.rai@test.com' }, gender: 'male' },
+  { name: 'Sita Lama', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'mid-term', score: 72, status: 'On Track', details: { phone: '9844332211', email: 'sita.lama@test.com' }, gender: 'female' },
+  { name: 'Nitesh Yadav', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 79, status: 'On Track', details: { phone: '9819283746', email: 'nitesh.yadav@test.com' }, gender: 'male' },
+  { name: 'Sunita Shrestha', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 81, status: 'On Track', details: { phone: '9801928374', email: 'sunita.shrestha@test.com' }, gender: 'female' },
+  { name: 'Rajesh Magar', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 68, status: 'Needs Help', details: { phone: '9860192837', email: 'rajesh.magar@test.com' }, gender: 'male' },
+  { name: 'Ravi Singh', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 15, status: 'Needs Help', details: { phone: '1111111111', email: 'ravi.singh@test.com' }, gender: 'male' },
+  { name: 'Mira Devi', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 35, status: 'Needs Help', details: { phone: '2222222222', email: 'mira.devi@test.com' }, gender: 'female' },
+  { name: 'Arjun Patel', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 55, status: 'On Track', details: { phone: '3333333333', email: 'arjun.patel@test.com' }, gender: 'male' },
+  { name: 'Pooja Reddy', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 75, status: 'On Track', details: { phone: '4444444444', email: 'pooja.reddy@test.com' }, gender: 'female' },
+  { name: 'Vikram Kumar', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 89, status: 'Excelling', details: { phone: '5555555555', email: 'vikram.kumar@test.com' }, gender: 'male' },
+  { name: 'Kiran KC', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 91, status: 'Excelling', details: { phone: '6666666666', email: 'kiran.kc@test.com' }, gender: 'male' },
+  { name: 'Manish Gupta', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'mid-term', score: 58, status: 'Needs Help', details: { phone: '7777777777', email: 'manish.gupta@test.com' }, gender: 'male' },
+  { name: 'Gita Joshi', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 98, status: 'Excelling', details: { phone: '8888888888', email: 'gita.joshi@test.com' }, gender: 'female' },
+  { name: 'Hari Prasad', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 45, status: 'Needs Help', details: { phone: '9999999999', email: 'hari.prasad@test.com' }, gender: 'male' },
+  { name: 'Srijana Tamang', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 82, status: 'Excelling', details: { phone: '1010101010', email: 'srijana.tamang@test.com' }, gender: 'female' },
 ];
 
 const calculateChartData = (students: typeof studentData) => {
@@ -336,5 +336,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    

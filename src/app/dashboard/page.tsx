@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import {
   Card,
   CardContent,
@@ -26,11 +26,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Users, Target, BookOpen, ArrowRight, FileText } from "lucide-react";
+import type { Exam } from "./questions/new/page";
 
 
 const studentData = [
@@ -58,21 +58,27 @@ const studentData = [
 
 const calculateChartData = (students: typeof studentData) => {
     const bins = [
-        { name: "0-20", total: 0 },
-        { name: "21-40", total: 0 },
-        { name: "41-60", total: 0 },
-        { name: "61-80", total: 0 },
-        { name: "81-100", total: 0 },
+        { name: "0-20", count: 0 },
+        { name: "21-40", count: 0 },
+        { name: "41-60", count: 0 },
+        { name: "61-80", count: 0 },
+        { name: "81-100", count: 0 },
     ];
     students.forEach(student => {
-        if(student.score >= 0 && student.score <= 20) bins[0].total++;
-        else if(student.score >= 21 && student.score <= 40) bins[1].total++;
-        else if(student.score >= 41 && student.score <= 60) bins[2].total++;
-        else if(student.score >= 61 && student.score <= 80) bins[3].total++;
-        else if(student.score >= 81 && student.score <= 100) bins[4].total++;
+        if(student.score <= 20) bins[0].count++;
+        else if(student.score <= 40) bins[1].count++;
+        else if(student.score <= 60) bins[2].count++;
+        else if(student.score <= 80) bins[3].count++;
+        else if(student.score <= 100) bins[4].count++;
     });
     return bins;
 }
+
+const subjects = [
+    { value: "data-mining", label: "Data Mining" },
+    { value: "network-systems", label: "Network Systems" },
+    { value: "distributed-computing", label: "Distributed Computing" },
+];
 
 export default function DashboardPage() {
   const [selectedSubject, setSelectedSubject] = useState("all-subjects");
@@ -80,6 +86,10 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredStudents, setFilteredStudents] = useState(studentData);
   const [chartData, setChartData] = useState(calculateChartData(studentData));
+  const [allExams, setAllExams] = useState<Exam[]>([]);
+
+  const totalStudents = studentData.length;
+  const averageScore = (studentData.reduce((acc, s) => acc + s.score, 0) / studentData.length).toFixed(1);
 
   useEffect(() => {
     let students = studentData;
@@ -103,14 +113,18 @@ export default function DashboardPage() {
     setChartData(calculateChartData(chartStudents));
   }, [selectedSubject, selectedExamType, searchQuery]);
 
+  useEffect(() => {
+    const storedExams = JSON.parse(localStorage.getItem('allExams') || '[]');
+    setAllExams(storedExams);
+  }, []);
 
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-6xl">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div className="container mx-auto p-4 md:p-8 max-w-7xl space-y-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold font-headline">Student Analytics</h1>
+          <h1 className="text-3xl font-bold font-headline">Dashboard</h1>
           <p className="text-muted-foreground">
-            Overview of student performance and engagement.
+            A high-level overview of student performance and portal activity.
           </p>
         </div>
         <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
@@ -120,9 +134,7 @@ export default function DashboardPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all-subjects">All Subjects</SelectItem>
-              <SelectItem value="data-mining">Data Mining</SelectItem>
-              <SelectItem value="network-systems">Network Systems</SelectItem>
-              <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
+              {subjects.map(s => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={selectedExamType} onValueChange={setSelectedExamType}>
@@ -138,24 +150,59 @@ export default function DashboardPage() {
           </Select>
         </div>
       </div>
-
-
-      <div className="grid gap-8">
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">{totalStudents}</div>
+                <p className="text-xs text-muted-foreground">Currently enrolled</p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Average Score</CardTitle>
+                <Target className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">{averageScore}%</div>
+                <p className="text-xs text-muted-foreground">Across all subjects and exams</p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Active Subjects</CardTitle>
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">{subjects.length}</div>
+                <p className="text-xs text-muted-foreground">Topics being taught</p>
+            </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <Card className="lg:col-span-3">
           <CardHeader>
              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <CardTitle>Performance Distribution</CardTitle>
                     <CardDescription>Student scores based on selected filters.</CardDescription>
                 </div>
-                <Button asChild>
-                  <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance' } }}>View Detailed Report</Link>
+                <Button asChild variant="outline" size="sm">
+                  <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance' } }}>
+                    View Detailed Report <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
             </div>
           </CardHeader>
           <CardContent className="pl-2">
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={chartData}>
+                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis
                   dataKey="name"
                   stroke="hsl(var(--foreground))"
@@ -168,6 +215,7 @@ export default function DashboardPage() {
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
+                  allowDecimals={false}
                   tickFormatter={(value) => `${value}`}
                 />
                 <Tooltip
@@ -178,11 +226,38 @@ export default function DashboardPage() {
                     color: 'hsl(var(--foreground))',
                   }}
                 />
-                <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="count" name="Students" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
+        
+        <Card className="lg:col-span-2">
+            <CardHeader>
+                <CardTitle>Recent Exams</CardTitle>
+                <CardDescription>Recently created quizzes and exams.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-4">
+                    {allExams.slice(0, 4).map((exam, index) => (
+                        <div key={index} className="flex items-center">
+                            <FileText className="h-6 w-6 mr-4 text-muted-foreground" />
+                            <div className="flex-1">
+                                <p className="text-sm font-medium leading-none">{exam.topic}</p>
+                                <p className="text-xs text-muted-foreground">{exam.subject}</p>
+                            </div>
+                            <Badge variant={exam.type === "quiz" ? "secondary" : "outline"}>
+                              {exam.type}
+                            </Badge>
+                        </div>
+                    ))}
+                </div>
+                 <Button asChild className="w-full mt-6">
+                  <Link href="/dashboard/questions/view">View All Exams</Link>
+                </Button>
+            </CardContent>
+        </Card>
+      </div>
 
         <Card>
           <CardHeader>
@@ -209,49 +284,55 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <Accordion type="single" collapsible className="w-full">
-              {filteredStudents.length > 0 ? (
-                filteredStudents.slice(0, 5).map((student, index) => (
-                  <AccordionItem value={`item-${index}`} key={student.name}>
-                    <AccordionTrigger>
-                      <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students', student: student.name } }} className="w-full">
-                        <Table className="w-full">
-                          <TableBody>
-                            <TableRow className="border-none">
-                              <TableCell className="font-medium p-0 w-1/4">{student.name}</TableCell>
-                              <TableCell className="hidden md:table-cell p-0 w-1/4">{student.subject}</TableCell>
-                              <TableCell className="hidden md:table-cell text-center p-0 w-1/4">{student.score}%</TableCell>
-                              <TableCell className="p-0 w-1/4 text-right">
+             <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Student</TableHead>
+                        <TableHead>Subject</TableHead>
+                        <TableHead className="hidden md:table-cell">Score</TableHead>
+                        <TableHead className="text-right">Status</TableHead>
+                        <TableHead className="text-right sr-only">View</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                   {filteredStudents.length > 0 ? (
+                    filteredStudents.slice(0, 5).map((student, index) => (
+                         <TableRow key={index}>
+                            <TableCell>
+                                <div className="flex items-center gap-3">
+                                    <Avatar>
+                                      <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/100/100`} />
+                                      <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <p className="font-medium">{student.name}</p>
+                                        <p className="text-xs text-muted-foreground hidden md:block">{student.details.email}</p>
+                                    </div>
+                                </div>
+                            </TableCell>
+                            <TableCell>{student.subject}</TableCell>
+                            <TableCell className="hidden md:table-cell">{student.score}%</TableCell>
+                            <TableCell className="text-right">
                                 <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Link>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                       <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students', student: student.name } }}>
-                        <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-md hover:bg-muted">
-                          <Avatar>
-                            <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/150/150`} />
-                            <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p><strong>Phone:</strong> {student.details.phone}</p>
-                            <p><strong>Email:</strong> {student.details.email}</p>
-                          </div>
-                        </div>
-                      </Link>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))
-              ) : (
-                <p className="text-center py-4 text-muted-foreground">No students found for the selected filters.</p>
-              )}
-            </Accordion>
+                            </TableCell>
+                            <TableCell className="text-right">
+                                 <Button asChild variant="ghost" size="sm">
+                                    <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students', student: student.name } }}>View</Link>
+                                 </Button>
+                            </TableCell>
+                         </TableRow>
+                    ))
+                   ) : (
+                    <TableRow>
+                        <TableCell colSpan={5} className="h-24 text-center">
+                            No students found for the selected filters.
+                        </TableCell>
+                    </TableRow>
+                   )}
+                </TableBody>
+            </Table>
           </CardContent>
         </Card>
-      </div>
     </div>
   );
 }

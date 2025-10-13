@@ -93,18 +93,26 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center px-4 md:px-6">
+      <div className="container flex h-16 items-center px-4 md:px-6 max-w-7xl">
         <div className="flex items-center">
           <Link href="/dashboard" className="flex items-center gap-2">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-6 w-6 text-primary"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-6 w-6 text-primary"
             >
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm4.6 13.44L15.5 14l1.1-1.44-1.44-1.1L14 12.5l-1.44-1.1-1.1 1.44L12.5 14l-1.1 1.44 1.44 1.1L14 15.5l1.44 1.1 1.16-1.44zM8 8.5l1.5-1.5L11 8.5 9.5 10 8 8.5zm8 0l1.5-1.5L19 8.5 17.5 10 16 8.5z" />
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
+                <path d="m15.5 7.5-3 3-1.5-1.5" />
+                <path d="M12 12_a_2.5 2.5 0 0 0-2.5 2.5_a_2.5 2.5 0 0 0 2.5 2.5_a_2.5 2.5 0 0 0 2.5-2.5_a_2.5 2.5 0 0 0-2.5-2.5Z" />
+                <path d="M19 12h-2" />
+                <path d="M5 12H3" />
+                <path d="m16.5 16.5-1-1" />
+                <path d="m8.5 8.5-1-1" />
             </svg>
             <span className="font-bold text-lg font-headline">Reviso</span>
           </Link>

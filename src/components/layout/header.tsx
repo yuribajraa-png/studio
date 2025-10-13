@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart2, HelpCircle, FileText, User, LogOut, Menu, ChevronDown, PieChart, Settings, Megaphone } from "lucide-react";
+import { BarChart2, HelpCircle, FileText, User, LogOut, Menu, ChevronDown, PieChart, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,23 +12,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { useTheme } from "next-themes";
 
 const navLinks = [
   { href: "/dashboard", label: "Analytics", icon: BarChart2 },
   { href: "/dashboard/analysis", label: "Detailed Analysis", icon: PieChart },
   { href: "/dashboard/documents", label: "Documents", icon: FileText },
-  { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone },
 ];
 
 export function Header() {
   const pathname = usePathname();
-  const { setTheme, theme } = useTheme();
 
   const isQuestionsActive = pathname.startsWith("/dashboard/questions");
 

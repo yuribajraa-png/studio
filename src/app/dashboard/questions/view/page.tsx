@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import type { Exam } from "../new/page";
+import { CaseUpper } from "lucide-react";
 
 export default function ViewExamsPage() {
   const [allExams, setAllExams] = useState<Exam[]>([]);
@@ -26,6 +27,12 @@ export default function ViewExamsPage() {
     const storedExams = JSON.parse(localStorage.getItem('allExams') || '[]');
     setAllExams(storedExams);
   }, []);
+
+  const getGradingLabel = (gradingType: string | undefined) => {
+    if (gradingType === 'auto') return 'Auto Grade';
+    if (gradingType === 'self-check') return 'Self Grade';
+    return 'N/A';
+  }
 
   return (
     <div className="container mx-auto p-4 md:p-8">
@@ -51,6 +58,7 @@ export default function ViewExamsPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-4">
+                        <Badge variant="outline" className="hidden sm:inline-flex">{getGradingLabel(exam.gradingType)}</Badge>
                         <span className="text-sm text-muted-foreground">{exam.questions.length} questions</span>
                         <Badge
                           variant={exam.type === "quiz" ? "secondary" : "outline"}
@@ -61,12 +69,18 @@ export default function ViewExamsPage() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    {exam.description && (
-                        <div className="p-4 bg-muted/20 rounded-md mb-4 border-l-4 border-primary">
-                            <p className="font-medium">Exam Description:</p>
-                            <p className="text-sm text-muted-foreground">{exam.description}</p>
+                    <div className="flex flex-wrap gap-4 mb-4">
+                       {exam.description && (
+                          <div className="p-4 bg-muted/20 rounded-md border-l-4 border-primary flex-1">
+                              <p className="font-medium">Exam Description:</p>
+                              <p className="text-sm text-muted-foreground">{exam.description}</p>
+                          </div>
+                      )}
+                       <div className="p-4 bg-muted/20 rounded-md border-l-4 border-primary flex-1 sm:flex-none">
+                            <p className="font-medium">Grading:</p>
+                            <p className="text-sm text-muted-foreground">{getGradingLabel(exam.gradingType)}</p>
                         </div>
-                    )}
+                    </div>
                     {exam.questions.map((q, qIndex) => (
                       <div
                         className="p-4 bg-muted/50 rounded-md mb-2"

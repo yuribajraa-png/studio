@@ -45,6 +45,7 @@ const examFormSchema = z.object({
   subject: z.string({ required_error: "Please select a subject." }),
   description: z.string().optional(),
   type: z.enum(["quiz", "exam"], { required_error: "Please select a type." }),
+  gradingType: z.enum(["auto", "self-check"], { required_error: "Please select a grading type." }),
   uniformMarks: z.boolean().default(false),
   marksPerQuestion: z.coerce.number().optional(),
   questions: z.array(questionSchema)
@@ -90,6 +91,7 @@ export default function NewQuestionPage() {
       subject: "",
       description: "",
       type: "quiz",
+      gradingType: "auto",
       uniformMarks: false,
       questions: [],
     },
@@ -260,8 +262,11 @@ export default function NewQuestionPage() {
                       </FormItem>
                     )}
                   />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <FormField control={form.control} name="type" render={({ field }) => (<FormItem className="space-y-3"><FormLabel>Type</FormLabel><FormControl><RadioGroup onValueChange={e => { field.onChange(e); remove(); addNewQuestion(); }} defaultValue={field.value} className="flex gap-4"><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="quiz" /></FormControl><FormLabel className="font-normal">Quiz</FormLabel></FormItem><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="exam" /></FormControl><FormLabel className="font-normal">Exam</FormLabel></FormItem></RadioGroup></FormControl><FormMessage /></FormItem>)} />
 
-                <FormField control={form.control} name="type" render={({ field }) => (<FormItem className="space-y-3"><FormLabel>Type</FormLabel><FormControl><RadioGroup onValueChange={e => { field.onChange(e); remove(); addNewQuestion(); }} defaultValue={field.value} className="flex gap-4"><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="quiz" /></FormControl><FormLabel className="font-normal">Quiz</FormLabel></FormItem><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="exam" /></FormControl><FormLabel className="font-normal">Exam</FormLabel></FormItem></RadioGroup></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="gradingType" render={({ field }) => (<FormItem className="space-y-3"><FormLabel>Grading Type</FormLabel><FormControl><RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex gap-4"><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="auto" /></FormControl><FormLabel className="font-normal">Auto Grade</FormLabel></FormItem><FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="self-check" /></FormControl><FormLabel className="font-normal">Self Grade</FormLabel></FormItem></RadioGroup></FormControl><FormMessage /></FormItem>)} />
+                  </div>
 
                 <div className="flex flex-col md:flex-row gap-4 items-center">
                     <FormField

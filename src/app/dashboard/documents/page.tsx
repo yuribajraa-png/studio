@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -103,7 +104,7 @@ export default function DocumentsPage() {
   }
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto py-8 px-4 md:px-8 lg:px-12">
       <header className="mb-8">
         <h1 className="text-3xl font-bold font-headline">Documents</h1>
         <p className="text-muted-foreground">Upload and manage study materials.</p>

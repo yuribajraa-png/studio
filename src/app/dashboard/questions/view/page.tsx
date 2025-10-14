@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -35,7 +36,7 @@ export default function ViewExamsPage() {
   }
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto py-8 px-4 md:px-8 lg:px-12">
       <header className="mb-8">
         <h1 className="text-3xl font-bold font-headline">Added Exams</h1>
         <p className="text-muted-foreground">

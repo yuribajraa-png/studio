@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -14,13 +15,13 @@ import Link from 'next/link';
 
 export default function LoginPage() {
   return (
-    <main className="flex items-center justify-center min-h-screen bg-background">
+    <main className="flex items-center justify-center min-h-screen bg-muted/30">
       <Card className="w-full max-w-sm mx-4">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center font-headline">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold font-headline">
             Reviso Admin
           </CardTitle>
-          <CardDescription className="text-center">
+          <CardDescription>
             Enter your credentials to access the portal
           </CardDescription>
         </CardHeader>
@@ -32,18 +33,24 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 placeholder="admin@reviso.com"
+                defaultValue="admin@reviso.com"
                 required
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" defaultValue="password" required />
             </div>
             <Button asChild className="w-full">
               <Link href="/dashboard">Login</Link>
             </Button>
           </form>
         </CardContent>
+        <CardFooter>
+          <p className="text-xs text-center text-muted-foreground w-full">
+            Test credentials: <strong>admin@reviso.com</strong> / <strong>password</strong>
+          </p>
+        </CardFooter>
       </Card>
     </main>
   );

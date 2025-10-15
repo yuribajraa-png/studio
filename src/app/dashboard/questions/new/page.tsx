@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -39,6 +40,8 @@ const questionSchema = z.object({
   marks: z.coerce.number().min(1, "Marks must be at least 1."),
   suggestion: z.string().optional(),
 });
+
+export type Question = z.infer<typeof questionSchema>;
 
 const examFormSchema = z.object({
   topic: z.string().min(3, "Topic must be at least 3 characters."),
@@ -413,3 +416,5 @@ export default function NewQuestionPage() {
     </div>
   )
 }
+
+    

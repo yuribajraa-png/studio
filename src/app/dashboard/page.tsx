@@ -61,7 +61,7 @@ const studentData = [
 const performanceDistributionData = [
   { status: "Excelling", value: studentData.filter(s => s.status === 'Excelling').length, fill: "hsl(var(--chart-2))" },
   { status: "On Track", value: studentData.filter(s => s.status === 'On Track').length, fill: "hsl(var(--chart-1))" },
-  { status: "Needs Help", value: studentData.filter(s => s.status === 'Needs Help').length, fill: "hsl(var(--destructive))" },
+  { status: "Needs Help", value: studentData.filter(s => s.status === 'Needs Help').length, fill: "hsl(var(--chart-5))" },
 ];
 
 const subjectAverageData = [

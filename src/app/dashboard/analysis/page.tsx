@@ -4,7 +4,7 @@
 import { useSearchParams } from 'next/navigation';
 import { PerformanceAnalysis } from '@/components/analysis/performance-analysis';
 import { StudentAnalysis } from '@/components/analysis/student-analysis';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import Link from "next/link";
 import { ArrowRight, BarChart2, Users, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -91,4 +91,3 @@ export default function DetailedAnalysisPage() {
         </div>
     );
 }
-

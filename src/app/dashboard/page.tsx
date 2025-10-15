@@ -49,296 +49,333 @@ const studentData = [
   { name: 'Mira Devi', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 35, status: 'Needs Help', details: { phone: '2222222222', email: 'mira.devi@test.com' }, gender: 'female' },
   { name: 'Arjun Patel', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'first-term', score: 55, status: 'On Track', details: { phone: '3333333333', email: 'arjun.patel@test.com' }, gender: 'male' },
   { name: 'Pooja Reddy', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 75, status: 'On Track', details: { phone: '4444444444', email: 'pooja.reddy@test.com' }, gender: 'female' },
-  { name: 'Vikram Kumar', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 89, status: 'Excelling', details: { phone: '5555555555', email: 'vikram.kumar@test.com' }, gender: 'male' },
-  { name: 'Kiran KC', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 91, status: 'Excelling', details: { phone: '6666666666', email: 'kiran.kc@test.com' }, gender: 'male' },
-  { name: 'Manish Gupta', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'mid-term', score: 58, status: 'Needs Help', details: { phone: '7777777777', email: 'manish.gupta@test.com' }, gender: 'male' },
-  { name: 'Gita Joshi', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'first-term', score: 98, status: 'Excelling', details: { phone: '8888888888', email: 'gita.joshi@test.com' }, gender: 'female' },
-  { name: 'Hari Prasad', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 45, status: 'Needs Help', details: { phone: '9999999999', email: 'hari.prasad@test.com' }, gender: 'male' },
-  { name: 'Srijana Tamang', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'final-term', score: 82, status: 'Excelling', details: { phone: '1010101010', email: 'srijana.tamang@test.com' }, gender: 'female' },
+  { name: 'Vikram Kumar', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 91, status: 'Excelling', details: { phone: '9812345678', email: 'vikram.kumar@test.com' }, gender: 'male' },
+  { name: 'Kiran KC', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'final-term', score: 93, status: 'Excelling', details: { phone: '9823456789', email: 'kiran.kc@test.com' }, gender: 'male' },
+  { name: 'Manish Gupta', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'mid-term', score: 62, status: 'On Track', details: { phone: '9834567890', email: 'manish.gupta@test.com' }, gender: 'male' },
+  { name: 'Gita Joshi', subject: 'Distributed Computing', subjectValue: 'distributed-computing', examType: 'first-term', score: 99, status: 'Excelling', details: { phone: '9845678901', email: 'gita.joshi@test.com' }, gender: 'female' },
+  { name: 'Hari Prasad', subject: 'Data Mining', subjectValue: 'data-mining', examType: 'mid-term', score: 50, status: 'Needs Help', details: { phone: '9856789012', email: 'hari.prasad@test.com' }, gender: 'male' },
+  { name: 'Srijana Tamang', subject: 'Network Systems', subjectValue: 'network-systems', examType: 'final-term', score: 85, status: 'Excelling', details: { phone: '9867890123', email: 'srijana.tamang@test.com' }, gender: 'female' },
 ];
 
-const calculateChartData = (students: typeof studentData) => {
-    const bins = [
-        { name: "0-20", count: 0 },
-        { name: "21-40", count: 0 },
-        { name: "41-60", count: 0 },
-        { name: "61-80", count: 0 },
-        { name: "81-100", count: 0 },
-    ];
-    students.forEach(student => {
-        if(student.score <= 20) bins[0].count++;
-        else if(student.score <= 40) bins[1].count++;
-        else if(student.score <= 60) bins[2].count++;
-        else if(student.score <= 80) bins[3].count++;
-        else if(student.score <= 100) bins[4].count++;
-    });
-    return bins;
-}
-
-const subjects = [
-    { value: "data-mining", label: "Data Mining" },
-    { value: "network-systems", label: "Network Systems" },
-    { value: "distributed-computing", label: "Distributed Computing" },
+const performanceDistributionData = [
+  { status: "Excelling", value: studentData.filter(s => s.status === 'Excelling').length, fill: "hsl(var(--chart-2))" },
+  { status: "On Track", value: studentData.filter(s => s.status === 'On Track').length, fill: "hsl(var(--chart-1))" },
+  { status: "Needs Help", value: studentData.filter(s => s.status === 'Needs Help').length, fill: "hsl(var(--destructive))" },
 ];
+
+const subjectAverageData = [
+  { subject: "Data Mining", average: 82.1 },
+  { subject: "Network Systems", average: 75.4 },
+  { subject: "Distributed Comp.", average: 79.8 },
+  { subject: "Java", average: 88.2 },
+  { subject: "Algorithms", average: 72.5 },
+];
+
 
 export default function DashboardPage() {
-  const [selectedSubject, setSelectedSubject] = useState("all-subjects");
-  const [selectedExamType, setSelectedExamType] = useState("all-exams");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredStudents, setFilteredStudents] = useState(studentData);
-  const [chartData, setChartData] = useState(calculateChartData(studentData));
+  const [searchTerm, setSearchTerm] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("all-subjects");
+  const [statusFilter, setStatusFilter] = useState("all-status");
   const [allExams, setAllExams] = useState<Exam[]>([]);
-
-  const totalStudents = studentData.length;
-  const averageScore = (studentData.reduce((acc, s) => acc + s.score, 0) / studentData.length).toFixed(1);
+  const [recentDocuments, setRecentDocuments] = useState([]);
 
   useEffect(() => {
-    let students = studentData;
-    let chartStudents = studentData;
-
-    if (selectedSubject !== 'all-subjects') {
-      students = students.filter(s => s.subjectValue === selectedSubject);
-      chartStudents = chartStudents.filter(s => s.subjectValue === selectedSubject);
-    }
-    
-    if (selectedExamType !== 'all-exams') {
-      students = students.filter(s => s.examType === selectedExamType);
-      chartStudents = chartStudents.filter(s => s.examType === selectedExamType);
-    }
-    
-    if (searchQuery) {
-        students = students.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
-    }
-
-    setFilteredStudents(students);
-    setChartData(calculateChartData(chartStudents));
-  }, [selectedSubject, selectedExamType, searchQuery]);
-
-  useEffect(() => {
+    // In a real app, these would be fetched from a database.
     const storedExams = JSON.parse(localStorage.getItem('allExams') || '[]');
-    setAllExams(storedExams);
+    setAllExams(storedExams.slice(0, 3)); // Get recent 3 exams
+    
+    // Mock recent documents for now
+    const docs = [
+      { title: "Data Mining Concepts", subject: "Data Mining", date: "2024-05-10" },
+      { title: "OSI Model", subject: "Network Systems", date: "2024-05-08" },
+      { title: "Intro to Distributed Systems", subject: "Distributed Computing", date: "2024-05-05" },
+    ];
+    setRecentDocuments(docs as any);
+
   }, []);
 
+  const filteredStudents = studentData.filter((student) => {
+    const nameMatch = student.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const subjectMatch = subjectFilter === "all-subjects" || student.subjectValue === subjectFilter;
+    const statusMatch = statusFilter === "all-status" || student.status === statusFilter;
+    return nameMatch && subjectMatch && statusMatch;
+  });
+
+  const getStatusVariant = (status: string) => {
+    if (status === 'Excelling') return 'default';
+    if (status === 'On Track') return 'secondary';
+    if (status === 'Needs Help') return 'destructive';
+    return 'outline';
+  }
+
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-7xl space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold font-headline">Dashboard</h1>
-          <p className="text-muted-foreground">
-            A high-level overview of student performance and portal activity.
-          </p>
-        </div>
-        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="Select Subject" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all-subjects">All Subjects</SelectItem>
-              {subjects.map(s => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
-            </SelectContent>
-          </Select>
-          <Select value={selectedExamType} onValueChange={setSelectedExamType}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="Select Exam Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all-exams">All Exams</SelectItem>
-              <SelectItem value="first-term">First Term</SelectItem>
-              <SelectItem value="mid-term">Mid Term</SelectItem>
-              <SelectItem value="final-term">Final Term</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{totalStudents}</div>
-                <p className="text-xs text-muted-foreground">Currently enrolled</p>
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Average Score</CardTitle>
-                <Target className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{averageScore}%</div>
-                <p className="text-xs text-muted-foreground">Across all subjects and exams</p>
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Subjects</CardTitle>
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{subjects.length}</div>
-                <p className="text-xs text-muted-foreground">Topics being taught</p>
-            </CardContent>
-        </Card>
-      </div>
+    <div className="container mx-auto py-8 px-4 md:px-8 lg:px-12">
+      <header className="mb-8">
+        <h1 className="text-3xl font-bold font-headline">Welcome back, Admin!</h1>
+        <p className="text-muted-foreground">
+          Here's a quick overview of your students' performance and activities.
+        </p>
+      </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <Card className="lg:col-span-3">
-          <CardHeader>
-             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <CardTitle>Performance Distribution</CardTitle>
-                    <CardDescription>Student scores based on selected filters.</CardDescription>
-                </div>
-                <Button asChild variant="outline" size="sm">
-                  <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance' } }}>
-                    View Detailed Report <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis
-                  dataKey="name"
-                  stroke="hsl(var(--foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  stroke="hsl(var(--foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  allowDecimals={false}
-                  tickFormatter={(value) => `${value}`}
-                />
-                <Tooltip
-                  cursor={{ fill: 'hsl(var(--accent))' }}
-                  contentStyle={{ 
-                    background: 'hsl(var(--background))',
-                    borderColor: 'hsl(var(--border))',
-                    color: 'hsl(var(--foreground))',
-                  }}
-                />
-                <Bar dataKey="count" name="Students" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-        
-        <Card className="lg:col-span-2">
+      <div className="grid gap-8 mb-8 lg:grid-cols-5">
+        <div className="lg:col-span-3">
+          <Card>
             <CardHeader>
-                <CardTitle>Recent Exams</CardTitle>
-                <CardDescription>Recently created quizzes and exams.</CardDescription>
+              <CardTitle>Performance Distribution</CardTitle>
+              <CardDescription>
+                A visual representation of how the students are grouped based on their performance status.
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    {allExams.slice(0, 3).map((exam, index) => (
-                        <div key={index} className="flex items-center">
-                            <FileText className="h-6 w-6 mr-4 text-muted-foreground" />
-                            <div className="flex-1">
-                                <p className="text-sm font-medium leading-none">{exam.topic}</p>
-                                <p className="text-xs text-muted-foreground">{exam.subject}</p>
+            <CardContent className="h-[250px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                 <BarChart data={performanceDistributionData} layout="vertical" margin={{ left: 10, right: 20}}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <XAxis type="number" hide />
+                  <YAxis type="category" dataKey="status" width={80} tickLine={false} axisLine={false} />
+                  <Tooltip
+                    cursor={{fill: 'hsl(var(--muted))'}}
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        return (
+                          <div className="rounded-lg border bg-background p-2 shadow-sm">
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="flex flex-col">
+                                <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                  Status
+                                </span>
+                                <span className="font-bold text-foreground">
+                                  {payload[0].payload.status}
+                                </span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                  Students
+                                </span>
+                                <span className="font-bold">
+                                  {payload[0].value}
+                                </span>
+                              </div>
                             </div>
-                            <Badge variant={exam.type === "quiz" ? "secondary" : "outline"}>
-                              {exam.type}
-                            </Badge>
-                        </div>
-                    ))}
-                </div>
-                 <div className="flex flex-col gap-2 mt-6">
-                    <Button asChild className="w-full">
-                      <Link href="/dashboard/questions/view">View All Exams</Link>
-                    </Button>
-                    <Button asChild className="w-full" variant="outline">
-                      <Link href="/dashboard/questions/view">See Individual Performance</Link>
-                    </Button>
-                 </div>
+                          </div>
+                        )
+                      }
+                      return null
+                    }}
+                  />
+                  <Legend />
+                  <Bar dataKey="value" name="Students" layout="vertical" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </CardContent>
-        </Card>
+            <CardFooter>
+               <Button asChild className="w-full">
+                <Link href="/dashboard/analysis?view=performance">
+                  View Detailed Report <ArrowRight className="ml-2" />
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Subject Averages</CardTitle>
+              <CardDescription>Average student scores across different subjects.</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={subjectAverageData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="subject" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis domain={[0,100]} hide />
+                  <Tooltip
+                    cursor={{fill: 'hsl(var(--muted))'}}
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        return (
+                          <div className="rounded-lg border bg-background p-2 shadow-sm">
+                              <span className="font-bold text-foreground">
+                                {payload[0].payload.subject}: {payload[0].value}%
+                              </span>
+                          </div>
+                        )
+                      }
+                      return null
+                    }}
+                  />
+                  <Bar dataKey="average" radius={[4, 4, 0, 0]} fill="hsl(var(--primary))" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                <Link href="/dashboard/analysis?view=performance">
+                    Compare Subjects <ArrowRight className="ml-2" />
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
 
-        <Card>
-          <CardHeader>
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div>
-                <CardTitle>Recent Student Activity</CardTitle>
-                <CardDescription>A glimpse of recent student performance.</CardDescription>
-              </div>
-              <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                <div className="relative w-full md:w-auto">
-                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                   <Input 
-                      type="search"
-                      placeholder="Search students..."
-                      className="pl-8 w-full md:w-[250px]"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                   />
-                </div>
-                <Button asChild>
-                  <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students' } }}>View All Students</Link>
-                </Button>
-              </div>
+      <div className="grid gap-8 mb-8 md:grid-cols-3">
+          <Card>
+              <CardHeader>
+                  <CardTitle>Recent Exams</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  <div className="space-y-4">
+                      {allExams.map((exam, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                              <div>
+                                  <p className="font-medium">{exam.topic}</p>
+                                  <p className="text-sm text-muted-foreground">{exam.subject}</p>
+                              </div>
+                              <Button asChild variant="secondary" size="sm">
+                                  <Link href={{ pathname: '/dashboard/analysis/exam', query: { exam: JSON.stringify(exam) } }}>View</Link>
+                              </Button>
+                          </div>
+                      ))}
+                  </div>
+              </CardContent>
+              <CardFooter>
+                  <Button asChild variant="outline" className="w-full">
+                      <Link href="/dashboard/questions/view">View All Exams</Link>
+                  </Button>
+              </CardFooter>
+          </Card>
+          <Card>
+              <CardHeader>
+                  <CardTitle>Recent Documents</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  <div className="space-y-4">
+                      {recentDocuments.map((doc: any, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                              <div>
+                                  <p className="font-medium">{doc.title}</p>
+                                  <p className="text-sm text-muted-foreground">{doc.subject}</p>
+                              </div>
+                              <p className="text-sm text-muted-foreground">{doc.date}</p>
+                          </div>
+                      ))}
+                  </div>
+              </CardContent>
+              <CardFooter>
+                  <Button asChild variant="outline" className="w-full">
+                      <Link href="/dashboard/documents">Manage Documents</Link>
+                  </Button>
+              </CardFooter>
+          </Card>
+           <Card>
+              <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 gap-4">
+                  <Button asChild variant="outline">
+                    <Link href="/dashboard/questions/new"><FileText className="mr-2"/>New Exam</Link>
+                  </Button>
+                   <Button asChild variant="outline">
+                    <Link href="/dashboard/documents"><BookOpen className="mr-2"/>Upload Doc</Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link href="/dashboard/analysis?view=students"><Users className="mr-2"/>Student Report</Link>
+                  </Button>
+                   <Button asChild variant="outline">
+                    <Link href="/dashboard/analysis?view=performance"><Target className="mr-2"/>Perf. Report</Link>
+                  </Button>
+              </CardContent>
+          </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Student Overview</CardTitle>
+          <CardDescription>
+            A sortable and filterable list of all students in your class.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="relative w-full md:flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by name..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
-          </CardHeader>
-          <CardContent>
-             <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Student</TableHead>
-                        <TableHead>Subject</TableHead>
-                        <TableHead className="hidden md:table-cell">Score</TableHead>
-                        <TableHead className="text-right">Status</TableHead>
-                        <TableHead className="text-right sr-only">View</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                   {filteredStudents.length > 0 ? (
-                    filteredStudents.slice(0, 5).map((student, index) => (
-                         <TableRow key={index}>
-                            <TableCell>
-                                <div className="flex items-center gap-3">
-                                    <Avatar>
-                                      <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/100/100`} />
-                                      <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="font-medium">{student.name}</p>
-                                        <p className="text-xs text-muted-foreground hidden md:block">{student.details.email}</p>
-                                    </div>
-                                </div>
-                            </TableCell>
-                            <TableCell>{student.subject}</TableCell>
-                            <TableCell className="hidden md:table-cell">{student.score}%</TableCell>
-                            <TableCell className="text-right">
-                                <Badge variant={student.status === 'Needs Help' ? 'destructive' : student.status === 'Excelling' ? 'default' : 'secondary'}>{student.status}</Badge>
-                            </TableCell>
-                            <TableCell className="text-right">
-                                 <Button asChild variant="ghost" size="sm">
-                                    <Link href={{ pathname: '/dashboard/analysis', query: { view: 'students', student: student.name } }}>View</Link>
-                                 </Button>
-                            </TableCell>
-                         </TableRow>
-                    ))
-                   ) : (
-                    <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center">
-                            No students found for the selected filters.
-                        </TableCell>
-                    </TableRow>
-                   )}
-                </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+            <Select value={subjectFilter} onValueChange={setSubjectFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Filter by subject" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-subjects">All Subjects</SelectItem>
+                <SelectItem value="data-mining">Data Mining</SelectItem>
+                <SelectItem value="network-systems">Network Systems</SelectItem>
+                <SelectItem value="distributed-computing">Distributed Computing</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-status">All Statuses</SelectItem>
+                <SelectItem value="Excelling">Excelling</SelectItem>
+                <SelectItem value="On Track">On Track</SelectItem>
+                <SelectItem value="Needs Help">Needs Help</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Student</TableHead>
+                <TableHead>Subject</TableHead>
+                <TableHead>Latest Score</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead><span className="sr-only">Actions</span></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredStudents.map((student) => (
+                <TableRow key={student.name}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar>
+                        <AvatarImage src={`https://picsum.photos/seed/${student.name}${student.gender === 'male' ? 'boy' : 'girl'}/100/100`} />
+                        <AvatarFallback>{student.name.substring(0,2)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium">{student.name}</p>
+                        <p className="text-sm text-muted-foreground hidden md:block">{student.details.email}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>{student.subject}</TableCell>
+                  <TableCell>{student.score}%</TableCell>
+                  <TableCell>
+                    <Badge variant={getStatusVariant(student.status)}>{student.status}</Badge>
+                  </TableCell>
+                   <TableCell className="text-right">
+                    <Button asChild variant="outline" size="sm">
+                       <Link href={`/dashboard/analysis?view=students&student=${encodeURIComponent(student.name)}`}>
+                        View Profile
+                      </Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
+
+    

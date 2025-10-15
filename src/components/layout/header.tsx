@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -93,21 +94,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center px-4 md:px-6 max-w-7xl">
-        <div className="flex items-center">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
-            </div>
-            <span className="font-bold text-lg font-headline">Reviso</span>
-          </Link>
-        </div>
-
-        <nav className="hidden md:flex flex-1 justify-center items-center gap-2 text-sm">
-          {renderNavLinks()}
-        </nav>
-
-        <div className="flex items-center gap-2 ml-auto">
-          <div className="md:hidden">
+        <div className="flex items-center mr-auto">
+          <div className="md:hidden mr-2">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -122,6 +110,19 @@ export function Header() {
               </SheetContent>
             </Sheet>
           </div>
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+            </div>
+            <span className="font-bold text-lg font-headline">Reviso</span>
+          </Link>
+        </div>
+
+        <nav className="hidden md:flex flex-1 justify-center items-center gap-2 text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          {renderNavLinks()}
+        </nav>
+
+        <div className="flex items-center gap-2 ml-auto">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">

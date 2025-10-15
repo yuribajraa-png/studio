@@ -50,6 +50,11 @@ const initialExams: Exam[] = [
             { question: "The Physical Layer of the OSI model deals with which of the following?", options: [{value: "IP addressing"}, {value: "Error detection"}, {value: "Bit transmission"}, {value: "Flow control"}], correctAnswer: "3", marks: 5 },
             { question: "Which device operates primarily at the Data Link layer (Layer 2)?", options: [{value: "Router"}, {value: "Hub"}, {value: "Switch"}, {value: "Repeater"}], correctAnswer: "3", marks: 5 },
             { question: "TCP is a connection-oriented protocol that operates at which layer?", options: [{value: "Network Layer"}, {value: "Transport Layer"}, {value: "Session Layer"}, {value: "Application Layer"}], correctAnswer: "2", marks: 5 },
+            { question: "Which layer is responsible for logical addressing and routing?", options: [{value: "Physical Layer"}, {value: "Data Link Layer"}, {value: "Network Layer"}, {value: "Transport Layer"}], correctAnswer: "3", marks: 5 },
+            { question: "What does 'MAC' stand for in the context of networking?", options: [{value: "Media Access Control"}, {value: "Machine Address Code"}, {value: "Mobile Access Carrier"}, {value: "Master Access Control"}], correctAnswer: "1", marks: 5 },
+            { question: "A hub operates at which layer of the OSI model?", options: [{value: "Physical Layer"}, {value: "Data Link Layer"}, {value: "Network Layer"}, {value: "Session Layer"}], correctAnswer: "1", marks: 5 },
+            { question: "The process of adding headers at each layer is known as what?", options: [{value: "Encapsulation"}, {value: "Decapsulation"}, {value: "Fragmentation"}, {value: "Segmentation"}], correctAnswer: "1", marks: 5 },
+            { question: "HTTP operates at which layer of the OSI model?", options: [{value: "Transport Layer"}, {value: "Session Layer"}, {value: "Presentation Layer"}, {value: "Application Layer"}], correctAnswer: "4", marks: 5 },
         ]
     },
     {
@@ -64,6 +69,11 @@ const initialExams: Exam[] = [
             { question: "Explain the concept of 'eventual consistency' in distributed systems.", marks: 10 },
             { question: "Describe the role of a load balancer in a distributed architecture.", marks: 10 },
             { question: "What is idempotency in the context of distributed systems and why is it important?", marks: 10 },
+            { question: "Explain the 'Leader Election' pattern in distributed systems.", marks: 10 },
+            { question: "What is the difference between synchronous and asynchronous communication in microservices?", marks: 10 },
+            { question: "Describe how a message queue, like RabbitMQ or Kafka, works.", marks: 10 },
+            { question: "What is a 'service mesh' (e.g., Istio) and what problems does it solve?", marks: 10 },
+            { question: "Explain the concept of 'sharding' in the context of databases.", marks: 10 },
         ]
     },
      {
@@ -78,6 +88,11 @@ const initialExams: Exam[] = [
             { question: "Which collection class allows unique elements only?", options: [{value: "ArrayList"}, {value: "HashMap"}, {value: "HashSet"}, {value: "LinkedList"}], correctAnswer: "3", marks: 5 },
             { question: "What is the purpose of the `super` keyword in Java?", options: [{value: "To access the superclass members"}, {value: "To define a superclass"}, {value: "To create a new instance"}, {value: "To declare a static method"}], correctAnswer: "1", marks: 5 },
             { question: "Which of these is not a feature of Java?", options: [{value: "Object-oriented"}, {value: "Platform independent"}, {value: "Use of pointers"}, {value: "Robust"}], correctAnswer: "3", marks: 5 },
+            { question: "What is the root class of all classes in Java?", options: [{value: "Object"}, {value: "Class"}, {value: "System"}, {value: "Main"}], correctAnswer: "1", marks: 5 },
+            { question: "Which keyword is used to prevent a method from being overridden?", options: [{value: "static"}, {value: "private"}, {value: "final"}, {value: "abstract"}], correctAnswer: "3", marks: 5 },
+            { question: "What is an interface in Java?", options: [{value: "A class that can have instances"}, {value: "A blueprint of a class with static constants and abstract methods"}, {value: "A concrete class"}, {value: "A way to achieve multiple inheritance of state"}], correctAnswer: "2", marks: 5 },
+            { question: "Which exception is thrown when an arithmetic operation results in an error?", options: [{value: "IOException"}, {value: "ArithmeticException"}, {value: "NumberFormatException"}, {value: "ArrayIndexOutOfBoundsException"}], correctAnswer: "2", marks: 5 },
+            { question: "What does the `finally` block do in a try-catch-finally statement?", options: [{value: "It executes only when an exception occurs"}, {value: "It is optional and rarely used"}, {value: "It always executes, regardless of whether an exception occurred"}, {value: "It executes only if no exception occurs"}], correctAnswer: "3", marks: 5 },
         ]
     }
 ];

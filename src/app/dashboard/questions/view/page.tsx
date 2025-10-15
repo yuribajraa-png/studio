@@ -93,17 +93,16 @@ export default function ViewExamsPage() {
             {allExams.length > 0 ? (
               allExams.map((exam, examIndex) => (
                 <AccordionItem value={`exam-${examIndex}`} key={examIndex}>
-                  <AccordionTrigger asChild>
-                    <div className="flex w-full items-center">
-                      <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance', subject: getSubjectValue(exam.subject) } }} className="flex flex-1 justify-between w-full items-center pr-4 text-left hover:no-underline">
-                        <div className="flex flex-col items-start gap-1">
+                    <AccordionTrigger>
+                      <div className="flex flex-1 justify-between w-full items-center pr-4 text-left">
+                        <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance', subject: getSubjectValue(exam.subject) } }} className="flex flex-col items-start gap-1 hover:underline">
                           <span className="font-semibold">{exam.topic}</span>
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">{exam.subject}</span>
                              <span className="text-xs text-muted-foreground hidden sm:inline-block">&bull;</span>
                             <span className="text-sm text-muted-foreground hidden sm:inline-block">Conducted on: {exam.date}</span>
                           </div>
-                        </div>
+                        </Link>
                         <div className="flex items-center gap-4 ml-auto">
                           <Badge variant="outline" className="hidden sm:inline-flex">{getGradingLabel(exam.gradingType)}</Badge>
                           <span className="text-sm text-muted-foreground">{exam.questions.length} questions</span>
@@ -113,10 +112,8 @@ export default function ViewExamsPage() {
                             {exam.type}
                           </Badge>
                         </div>
-                      </Link>
-                      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 no-rotate" />
-                    </div>
-                  </AccordionTrigger>
+                      </div>
+                    </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-wrap gap-4 mb-4">
                        {exam.description && (

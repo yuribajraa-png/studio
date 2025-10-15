@@ -43,6 +43,8 @@ const initialExams: Exam[] = [
             { question: "Which layer of the OSI model is responsible for data encryption and compression?", options: [{value: "Application Layer"}, {value: "Presentation Layer"}, {value: "Session Layer"}, {value: "Transport Layer"}], correctAnswer: "2", marks: 5 },
             { question: "What is the primary function of a subnet mask in an IP network?", options: [{value: "To identify the host portion of an IP address"}, {value: "To identify the network portion of an IP address"}, {value: "To provide a default gateway"}, {value: "To resolve domain names"}], correctAnswer: "2", marks: 5 },
             { question: "The Physical Layer of the OSI model deals with which of the following?", options: [{value: "IP addressing"}, {value: "Error detection"}, {value: "Bit transmission"}, {value: "Flow control"}], correctAnswer: "3", marks: 5 },
+            { question: "Which device operates primarily at the Data Link layer (Layer 2)?", options: [{value: "Router"}, {value: "Hub"}, {value: "Switch"}, {value: "Repeater"}], correctAnswer: "3", marks: 5 },
+            { question: "TCP is a connection-oriented protocol that operates at which layer?", options: [{value: "Network Layer"}, {value: "Transport Layer"}, {value: "Session Layer"}, {value: "Application Layer"}], correctAnswer: "2", marks: 5 },
         ]
     },
     {
@@ -56,6 +58,7 @@ const initialExams: Exam[] = [
             { question: "Compare and contrast monoliths and microservices. List three advantages of a microservices architecture.", marks: 15 },
             { question: "Explain the concept of 'eventual consistency' in distributed systems.", marks: 10 },
             { question: "Describe the role of a load balancer in a distributed architecture.", marks: 10 },
+            { question: "What is idempotency in the context of distributed systems and why is it important?", marks: 10 },
         ]
     },
      {
@@ -67,6 +70,9 @@ const initialExams: Exam[] = [
         questions: [
             { question: "Which of these keywords is used to make a class abstract?", options: [{value: "abstract"}, {value: "final"}, {value: "static"}, {value: "native"}], correctAnswer: "1", marks: 5 },
             { question: "What is the default value of a boolean variable in Java?", options: [{value: "true"}, {value: "false"}, {value: "null"}, {value: "0"}], correctAnswer: "2", marks: 5 },
+            { question: "Which collection class allows unique elements only?", options: [{value: "ArrayList"}, {value: "HashMap"}, {value: "HashSet"}, {value: "LinkedList"}], correctAnswer: "3", marks: 5 },
+            { question: "What is the purpose of the `super` keyword in Java?", options: [{value: "To access the superclass members"}, {value: "To define a superclass"}, {value: "To create a new instance"}, {value: "To declare a static method"}], correctAnswer: "1", marks: 5 },
+            { question: "Which of these is not a feature of Java?", options: [{value: "Object-oriented"}, {value: "Platform independent"}, {value: "Use of pointers"}, {value: "Robust"}], correctAnswer: "3", marks: 5 },
         ]
     }
 ];
@@ -214,3 +220,5 @@ export default function ViewExamsPage() {
     </div>
   );
 }
+
+    

@@ -67,8 +67,8 @@ const performanceDataBySubject: any = {
     }
 };
 
-export function PerformanceAnalysis() {
-    const [selectedSubject, setSelectedSubject] = useState("all-subjects");
+export function PerformanceAnalysis({ initialSubject }: { initialSubject: string | null }) {
+    const [selectedSubject, setSelectedSubject] = useState(initialSubject || "all-subjects");
     const performanceData = performanceDataBySubject[selectedSubject];
 
     return (

@@ -2,12 +2,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import {
   Accordion,
@@ -17,7 +15,42 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import type { Exam } from "../new/page";
-import { CaseUpper } from "lucide-react";
+
+const initialExams: Exam[] = [
+    {
+        topic: "Mid-Term: Data Structures",
+        subject: "Data Mining",
+        date: "2024-04-15",
+        type: "exam",
+        gradingType: "auto",
+        questions: [
+            { question: "Explain the difference between an array and a linked list.", marks: 10 },
+            { question: "Describe the process of a binary search.", marks: 10 }
+        ]
+    },
+    {
+        topic: "Chapter 3 Quiz",
+        subject: "Network Systems",
+        date: "2024-05-02",
+        type: "quiz",
+        gradingType: "auto",
+        questions: [
+            { question: "What is the function of the OSI presentation layer?", options: [{value: "A"}, {value: "B"}, {value: "C"}], correctAnswer: "1", marks: 5 },
+            { question: "What is a subnet mask?", options: [{value: "A"}, {value: "B"}, {value: "C"}], correctAnswer: "2", marks: 5 }
+        ]
+    },
+    {
+        topic: "Final Exam Prep",
+        subject: "Distributed Computing",
+        date: "2024-05-20",
+        type: "exam",
+        gradingType: "self-check",
+        questions: [
+            { question: "What is the CAP theorem and what are its implications?", marks: 15 },
+            { question: "Compare and contrast monoliths and microservices.", marks: 15 }
+        ]
+    }
+];
 
 export default function ViewExamsPage() {
   const [allExams, setAllExams] = useState<Exam[]>([]);
@@ -25,7 +58,11 @@ export default function ViewExamsPage() {
   useEffect(() => {
     // In a real app, you'd fetch this from a database.
     // For now, we use localStorage to persist across reloads.
-    const storedExams = JSON.parse(localStorage.getItem('allExams') || '[]');
+    let storedExams = JSON.parse(localStorage.getItem('allExams') || '[]');
+    if (storedExams.length === 0) {
+        storedExams = initialExams;
+        localStorage.setItem('allExams', JSON.stringify(initialExams));
+    }
     setAllExams(storedExams);
   }, []);
 
@@ -35,12 +72,17 @@ export default function ViewExamsPage() {
     return 'N/A';
   }
 
+  const getSubjectValue = (subjectLabel: string | undefined) => {
+    if (!subjectLabel) return "all-subjects";
+    return subjectLabel.toLowerCase().replace(/\s+/g, '-');
+  }
+
   return (
-    <div className="container mx-auto py-8 px-4 md:px-8 lg:px-12">
+    <div className="container mx-auto py-12 px-4 md:px-8 lg:px-12">
       <header className="mb-8">
         <h1 className="text-3xl font-bold font-headline">Added Exams</h1>
         <p className="text-muted-foreground">
-          Review previously created exams and quizzes.
+          Review previously created exams and quizzes. Click on an exam to see a detailed performance analysis.
         </p>
       </header>
 
@@ -50,15 +92,17 @@ export default function ViewExamsPage() {
             {allExams.length > 0 ? (
               allExams.map((exam, examIndex) => (
                 <AccordionItem value={`exam-${examIndex}`} key={examIndex}>
-                  <AccordionTrigger>
-                    <div className="flex justify-between w-full items-center pr-4">
-                      <div className="flex flex-col items-start">
+                  <AccordionTrigger asChild>
+                    <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance', subject: getSubjectValue(exam.subject) } }} className="flex justify-between w-full items-center pr-4 text-left hover:no-underline">
+                      <div className="flex flex-col items-start gap-1">
                         <span className="font-semibold">{exam.topic}</span>
-                        <span className="text-sm text-muted-foreground">
-                          {exam.subject}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">{exam.subject}</span>
+                           <span className="text-xs text-muted-foreground hidden sm:inline-block">&bull;</span>
+                          <span className="text-sm text-muted-foreground hidden sm:inline-block">Conducted on: {exam.date}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-4 ml-auto">
                         <Badge variant="outline" className="hidden sm:inline-flex">{getGradingLabel(exam.gradingType)}</Badge>
                         <span className="text-sm text-muted-foreground">{exam.questions.length} questions</span>
                         <Badge
@@ -67,7 +111,7 @@ export default function ViewExamsPage() {
                           {exam.type}
                         </Badge>
                       </div>
-                    </div>
+                    </Link>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-wrap gap-4 mb-4">

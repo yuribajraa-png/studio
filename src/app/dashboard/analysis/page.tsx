@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PerformanceAnalysis } from '@/components/analysis/performance-analysis';
 import { StudentAnalysis } from '@/components/analysis/student-analysis';
@@ -9,8 +9,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 function DetailedAnalysisContent() {
   const searchParams = useSearchParams();
   const view = searchParams.get('view');
-
   const studentName = searchParams.get('student');
+  const subject = searchParams.get('subject');
+  
+  const [key, setKey] = useState(Date.now());
+
+  useEffect(() => {
+    // Force re-render of PerformanceAnalysis when subject changes
+    setKey(Date.now());
+  }, [subject]);
 
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-6xl">
@@ -22,7 +29,7 @@ function DetailedAnalysisContent() {
               A detailed look at overall class performance.
             </p>
           </header>
-          <PerformanceAnalysis />
+          <PerformanceAnalysis key={key} initialSubject={subject} />
         </>
       )}
       {view === 'students' && (

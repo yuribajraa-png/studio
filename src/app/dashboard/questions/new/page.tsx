@@ -43,6 +43,7 @@ const questionSchema = z.object({
 const examFormSchema = z.object({
   topic: z.string().min(3, "Topic must be at least 3 characters."),
   subject: z.string({ required_error: "Please select a subject." }),
+  date: z.string().optional(),
   description: z.string().optional(),
   type: z.enum(["quiz", "exam"], { required_error: "Please select a type." }),
   gradingType: z.enum(["auto", "self-check"], { required_error: "Please select a grading type." }),
@@ -145,11 +146,13 @@ export default function NewQuestionPage() {
         });
     }
 
+    const newExam = { ...data, date: new Date().toISOString().split('T')[0] };
+
     // Persist to state (and in real app, to DB)
     const currentExams = JSON.parse(localStorage.getItem('allExams') || '[]');
-    localStorage.setItem('allExams', JSON.stringify([...currentExams, data]));
+    localStorage.setItem('allExams', JSON.stringify([...currentExams, newExam]));
 
-    setAllExams(prev => [...prev, data]);
+    setAllExams(prev => [...prev, newExam]);
     toast({
       title: "Exam Created",
       description: `The exam "${data.topic}" has been successfully created.`,

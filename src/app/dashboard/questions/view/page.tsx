@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import type { Exam } from "../new/page";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, BarChart2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const initialExams: Exam[] = [
     {
@@ -115,18 +116,27 @@ export default function ViewExamsPage() {
                       </div>
                     </AccordionTrigger>
                   <AccordionContent>
-                    <div className="flex flex-wrap gap-4 mb-4">
-                       {exam.description && (
-                          <div className="p-4 bg-muted/20 rounded-md border-l-4 border-primary flex-1">
-                              <p className="font-medium">Exam Description:</p>
-                              <p className="text-sm text-muted-foreground">{exam.description}</p>
+                    <div className="flex flex-wrap gap-4 mb-4 items-start justify-between">
+                       <div className="flex-1 min-w-[200px]">
+                         {exam.description && (
+                            <div className="p-4 bg-muted/20 rounded-md border-l-4 border-primary mb-4">
+                                <p className="font-medium">Exam Description:</p>
+                                <p className="text-sm text-muted-foreground">{exam.description}</p>
+                            </div>
+                        )}
+                         <div className="p-4 bg-muted/20 rounded-md border-l-4 border-primary sm:flex-none">
+                              <p className="font-medium">Grading:</p>
+                              <p className="text-sm text-muted-foreground">{getGradingLabel(exam.gradingType)}</p>
                           </div>
-                      )}
-                       <div className="p-4 bg-muted/20 rounded-md border-l-4 border-primary flex-1 sm:flex-none">
-                            <p className="font-medium">Grading:</p>
-                            <p className="text-sm text-muted-foreground">{getGradingLabel(exam.gradingType)}</p>
-                        </div>
+                       </div>
+                       <Button asChild>
+                          <Link href={{ pathname: '/dashboard/analysis/exam', query: { exam: JSON.stringify(exam) } }}>
+                            <BarChart2 className="mr-2 h-4 w-4" />
+                            View Analysis
+                          </Link>
+                       </Button>
                     </div>
+
                     {exam.questions.map((q, qIndex) => (
                       <div
                         className="p-4 bg-muted/50 rounded-md mb-2"

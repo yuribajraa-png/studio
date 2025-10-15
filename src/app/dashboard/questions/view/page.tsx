@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import type { Exam } from "../new/page";
+import { ChevronDown } from "lucide-react";
 
 const initialExams: Exam[] = [
     {
@@ -93,25 +94,28 @@ export default function ViewExamsPage() {
               allExams.map((exam, examIndex) => (
                 <AccordionItem value={`exam-${examIndex}`} key={examIndex}>
                   <AccordionTrigger asChild>
-                    <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance', subject: getSubjectValue(exam.subject) } }} className="flex justify-between w-full items-center pr-4 text-left hover:no-underline">
-                      <div className="flex flex-col items-start gap-1">
-                        <span className="font-semibold">{exam.topic}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">{exam.subject}</span>
-                           <span className="text-xs text-muted-foreground hidden sm:inline-block">&bull;</span>
-                          <span className="text-sm text-muted-foreground hidden sm:inline-block">Conducted on: {exam.date}</span>
+                    <div className="flex w-full items-center">
+                      <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance', subject: getSubjectValue(exam.subject) } }} className="flex flex-1 justify-between w-full items-center pr-4 text-left hover:no-underline">
+                        <div className="flex flex-col items-start gap-1">
+                          <span className="font-semibold">{exam.topic}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">{exam.subject}</span>
+                             <span className="text-xs text-muted-foreground hidden sm:inline-block">&bull;</span>
+                            <span className="text-sm text-muted-foreground hidden sm:inline-block">Conducted on: {exam.date}</span>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-4 ml-auto">
-                        <Badge variant="outline" className="hidden sm:inline-flex">{getGradingLabel(exam.gradingType)}</Badge>
-                        <span className="text-sm text-muted-foreground">{exam.questions.length} questions</span>
-                        <Badge
-                          variant={exam.type === "quiz" ? "secondary" : "outline"}
-                        >
-                          {exam.type}
-                        </Badge>
-                      </div>
-                    </Link>
+                        <div className="flex items-center gap-4 ml-auto">
+                          <Badge variant="outline" className="hidden sm:inline-flex">{getGradingLabel(exam.gradingType)}</Badge>
+                          <span className="text-sm text-muted-foreground">{exam.questions.length} questions</span>
+                          <Badge
+                            variant={exam.type === "quiz" ? "secondary" : "outline"}
+                          >
+                            {exam.type}
+                          </Badge>
+                        </div>
+                      </Link>
+                      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 no-rotate" />
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-wrap gap-4 mb-4">

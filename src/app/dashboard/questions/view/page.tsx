@@ -28,9 +28,14 @@ const initialExams: Exam[] = [
         questions: [
             { question: "Explain the difference between an array and a linked list, highlighting their respective strengths and weaknesses.", marks: 10 },
             { question: "Describe the process of a binary search on a sorted array. What is its time complexity?", marks: 10 },
-            { question: "What is a hash table? Explain how collisions are handled using chaining.", marks: 15 },
+            { question: "What is a hash table? Explain how collisions are handled using chaining.", marks: 10 },
             { question: "Differentiate between a stack and a queue. Provide one real-world example for each.", marks: 10 },
-            { question: "What are the key properties of a Binary Search Tree (BST)?", marks: 5 },
+            { question: "What are the key properties of a Binary Search Tree (BST)?", marks: 10 },
+            { question: "Explain the bubble sort algorithm and its time complexity. Why is it not suitable for large datasets?", marks: 10 },
+            { question: "What is recursion? Provide a simple example of a recursive function.", marks: 10 },
+            { question: "Compare and contrast Breadth-First Search (BFS) and Depth-First Search (DFS) for graph traversal.", marks: 10 },
+            { question: "What is Big O notation, and why is it important in algorithm analysis?", marks: 10 },
+            { question: "Describe what a min-heap is and its primary properties.", marks: 10 },
         ]
     },
     {
@@ -220,5 +225,3 @@ export default function ViewExamsPage() {
     </div>
   );
 }
-
-    

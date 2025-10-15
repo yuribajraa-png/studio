@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -239,7 +240,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
-                    {allExams.slice(0, 4).map((exam, index) => (
+                    {allExams.slice(0, 3).map((exam, index) => (
                         <div key={index} className="flex items-center">
                             <FileText className="h-6 w-6 mr-4 text-muted-foreground" />
                             <div className="flex-1">
@@ -252,9 +253,14 @@ export default function DashboardPage() {
                         </div>
                     ))}
                 </div>
-                 <Button asChild className="w-full mt-6">
-                  <Link href="/dashboard/questions/view">View All Exams</Link>
-                </Button>
+                 <div className="flex flex-col gap-2 mt-6">
+                    <Button asChild className="w-full">
+                      <Link href="/dashboard/questions/view">View All Exams</Link>
+                    </Button>
+                    <Button asChild className="w-full" variant="outline">
+                      <Link href="/dashboard/questions/view">See Individual Performance</Link>
+                    </Button>
+                 </div>
             </CardContent>
         </Card>
       </div>

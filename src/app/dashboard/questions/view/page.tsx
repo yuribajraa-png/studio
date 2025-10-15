@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import type { Exam } from "../new/page";
-import { ChevronDown, BarChart2 } from "lucide-react";
+import { BarChart2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const initialExams: Exam[] = [
@@ -96,17 +96,21 @@ export default function ViewExamsPage() {
                 <AccordionItem value={`exam-${examIndex}`} key={examIndex}>
                     <AccordionTrigger>
                       <div className="flex flex-1 justify-between w-full items-center pr-4 text-left">
-                        <Link href={{ pathname: '/dashboard/analysis', query: { view: 'performance', subject: getSubjectValue(exam.subject) } }} className="flex flex-col items-start gap-1 hover:underline">
+                        <div className="flex flex-col items-start gap-1">
                           <span className="font-semibold">{exam.topic}</span>
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">{exam.subject}</span>
                              <span className="text-xs text-muted-foreground hidden sm:inline-block">&bull;</span>
                             <span className="text-sm text-muted-foreground hidden sm:inline-block">Conducted on: {exam.date}</span>
                           </div>
-                        </Link>
+                        </div>
                         <div className="flex items-center gap-4 ml-auto">
-                          <Badge variant="outline" className="hidden sm:inline-flex">{getGradingLabel(exam.gradingType)}</Badge>
-                          <span className="text-sm text-muted-foreground">{exam.questions.length} questions</span>
+                           <Button asChild size="sm" variant="outline" onClick={(e) => e.stopPropagation()}>
+                              <Link href={{ pathname: '/dashboard/analysis/exam', query: { exam: JSON.stringify(exam) } }}>
+                                <BarChart2 className="mr-2 h-4 w-4" />
+                                View Analysis
+                              </Link>
+                           </Button>
                           <Badge
                             variant={exam.type === "quiz" ? "secondary" : "outline"}
                           >
@@ -129,12 +133,6 @@ export default function ViewExamsPage() {
                               <p className="text-sm text-muted-foreground">{getGradingLabel(exam.gradingType)}</p>
                           </div>
                        </div>
-                       <Button asChild>
-                          <Link href={{ pathname: '/dashboard/analysis/exam', query: { exam: JSON.stringify(exam) } }}>
-                            <BarChart2 className="mr-2 h-4 w-4" />
-                            View Analysis
-                          </Link>
-                       </Button>
                     </div>
 
                     {exam.questions.map((q, qIndex) => (

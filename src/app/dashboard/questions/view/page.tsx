@@ -26,30 +26,47 @@ const initialExams: Exam[] = [
         type: "exam",
         gradingType: "auto",
         questions: [
-            { question: "Explain the difference between an array and a linked list.", marks: 10 },
-            { question: "Describe the process of a binary search.", marks: 10 }
+            { question: "Explain the difference between an array and a linked list, highlighting their respective strengths and weaknesses.", marks: 10 },
+            { question: "Describe the process of a binary search on a sorted array. What is its time complexity?", marks: 10 },
+            { question: "What is a hash table? Explain how collisions are handled using chaining.", marks: 15 },
+            { question: "Differentiate between a stack and a queue. Provide one real-world example for each.", marks: 10 },
+            { question: "What are the key properties of a Binary Search Tree (BST)?", marks: 5 },
         ]
     },
     {
-        topic: "Chapter 3 Quiz",
+        topic: "Chapter 3 Quiz: OSI Model",
         subject: "Network Systems",
         date: "2024-05-02",
         type: "quiz",
         gradingType: "auto",
         questions: [
-            { question: "What is the function of the OSI presentation layer?", options: [{value: "A"}, {value: "B"}, {value: "C"}], correctAnswer: "1", marks: 5 },
-            { question: "What is a subnet mask?", options: [{value: "A"}, {value: "B"}, {value: "C"}], correctAnswer: "2", marks: 5 }
+            { question: "Which layer of the OSI model is responsible for data encryption and compression?", options: [{value: "Application Layer"}, {value: "Presentation Layer"}, {value: "Session Layer"}, {value: "Transport Layer"}], correctAnswer: "2", marks: 5 },
+            { question: "What is the primary function of a subnet mask in an IP network?", options: [{value: "To identify the host portion of an IP address"}, {value: "To identify the network portion of an IP address"}, {value: "To provide a default gateway"}, {value: "To resolve domain names"}], correctAnswer: "2", marks: 5 },
+            { question: "The Physical Layer of the OSI model deals with which of the following?", options: [{value: "IP addressing"}, {value: "Error detection"}, {value: "Bit transmission"}, {value: "Flow control"}], correctAnswer: "3", marks: 5 },
         ]
     },
     {
-        topic: "Final Exam Prep",
+        topic: "Final Exam Prep: Distributed Systems",
         subject: "Distributed Computing",
         date: "2024-05-20",
         type: "exam",
         gradingType: "self-check",
         questions: [
-            { question: "What is the CAP theorem and what are its implications?", marks: 15 },
-            { question: "Compare and contrast monoliths and microservices.", marks: 15 }
+            { question: "What is the CAP theorem and what are its implications for distributed database design?", marks: 15 },
+            { question: "Compare and contrast monoliths and microservices. List three advantages of a microservices architecture.", marks: 15 },
+            { question: "Explain the concept of 'eventual consistency' in distributed systems.", marks: 10 },
+            { question: "Describe the role of a load balancer in a distributed architecture.", marks: 10 },
+        ]
+    },
+     {
+        topic: "Quiz: Core Java Concepts",
+        subject: "Data Mining",
+        date: "2024-05-25",
+        type: "quiz",
+        gradingType: "auto",
+        questions: [
+            { question: "Which of these keywords is used to make a class abstract?", options: [{value: "abstract"}, {value: "final"}, {value: "static"}, {value: "native"}], correctAnswer: "1", marks: 5 },
+            { question: "What is the default value of a boolean variable in Java?", options: [{value: "true"}, {value: "false"}, {value: "null"}, {value: "0"}], correctAnswer: "2", marks: 5 },
         ]
     }
 ];
